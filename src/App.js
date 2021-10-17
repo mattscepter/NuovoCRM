@@ -1,5 +1,5 @@
 import './App.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import HomeRoute from './Routes/HomeRoute';
 import Dashboard from './Views/Dashboard';
 import Leads from './Views/Leads/Leads';
@@ -96,7 +96,7 @@ function App() {
       />
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/register" component={Signup} />
+        {/* <Route path="/register" component={Signup} /> */}
         <HomeRoute path="/" exact component={Dashboard} />
         <HomeRoute path="/leads" exact component={Leads} />
         <HomeRoute path="/inventory" exact component={Inventory} />
@@ -119,6 +119,7 @@ function App() {
           component={InventoryDetails}
         />
         <HomeRoute path="/contactdetail/:id" exact component={ContactDetail} />
+        <Redirect from="*" to="/" />
       </Switch>
     </div>
   );

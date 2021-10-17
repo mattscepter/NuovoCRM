@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import axiosInstance from '../../utils/axiosInstance';
 import { setAlert } from '../../context/actions/errorActions';
+import Select from 'react-select';
 
 const Message = () => {
   const contact = useSelector((state) => state.contact.contact);
@@ -22,13 +23,15 @@ const Message = () => {
   };
 
   const history = useHistory();
-  const { getFieldProps, errors, values, resetForm } = useFormik({
-    initialValues: {
-      contact: '',
-      message: '',
+  const { getFieldProps, errors, values, resetForm, setFieldValue } = useFormik(
+    {
+      initialValues: {
+        contact: '',
+        message: '',
+      },
+      validate,
     },
-    validate,
-  });
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,6 +59,20 @@ const Message = () => {
       });
   };
 
+  let options = [];
+
+  contact.forEach((element) => {
+    options.push({
+      value: element._id,
+      label:
+        element.name +
+        '(' +
+        element.phone +
+        ')' +
+        (element.company !== 'NA' ? `(${element.company})` : ''),
+    });
+  });
+
   return (
     <div>
       <div className="mt-10 mx-4">
@@ -75,19 +92,21 @@ const Message = () => {
             <lable className="text-gray-2 text-md font-semibold ">
               Select Contact
             </lable>
-            <select
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              name=""
-              id=""
-              {...getFieldProps('contact')}
-            >
-              <option value="" selected hidden style={{ color: 'lightgray' }}>
-                Select contact
-              </option>
-              {contact.map((c) => {
-                return <option value={c._id}>{c.name}</option>;
+            <Select
+              theme={(theme) => ({
+                ...theme,
+                borderRadius: 5,
+                colors: {
+                  ...theme.colors,
+                  primary25: 'lightgray',
+                  primary: 'lightgray',
+                },
               })}
-            </select>
+              options={options}
+              onChange={(selectedOption) => {
+                setFieldValue(`contact`, selectedOption.value);
+              }}
+            />
             {errors.contact ? (
               <div className="w-full text-sm text-red-400">
                 {errors.contact}

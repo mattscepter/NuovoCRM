@@ -95,14 +95,14 @@ const Login = () => {
         >
           Login
         </button>
-        <button
+        {/* <button
           onClick={() => {
             history.push('/register');
           }}
           className="bg-green-600 hover:bg-green-700 px-5 py-2 text-lg rounded-md my-2 mr-4 text-white"
         >
           Register
-        </button>
+        </button> */}
       </form>
     </div>
   );
