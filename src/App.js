@@ -1,23 +1,125 @@
-import logo from './logo.svg';
 import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import HomeRoute from './Routes/HomeRoute';
+import Dashboard from './Views/Dashboard';
+import Leads from './Views/Leads/Leads';
+import Message from './Views/Message/Message';
+import Inventory from './Views/Inventory/Inventory';
+import Contacts from './Views/Contact/Contacts';
+import Organization from './Views/Contact/Organization';
+import Persons from './Views/Contact/Person';
+import CreateLead from './Views/Leads/CreateLead';
+import UpdateLead from './Views/Leads/UpdateLead';
+import CreateContact from './Views/Contact/CreateContact';
+import UpdateContact from './Views/Contact/UpdateContact';
+import ContactDetail from './Views/Contact/ContactDetail';
+import CreateInventory from './Views/Inventory/CreateInventory';
+import UpdateInventory from './Views/Inventory/UpdateInventory';
+import InventoryDetails from './Views/Inventory/InventoryDetails';
+import Login from './Views/Auth/Login';
+import Signup from './Views/Auth/Signup';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFromStorage } from './context/actions/authActions/authActions';
+import { getInventory } from './context/actions/inventoryAction/inventoryAction';
+import {
+  getContact,
+  getOrganization,
+  getPersons,
+} from './context/actions/contactAction/contactAction';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Confirmation from './Components/Confirmation';
+import CreateFollowUpCard from './Views/Contact/CreateFollowUpCard';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getFromStorage());
+    dispatch(getOrganization());
+    dispatch(getPersons());
+    dispatch(getInventory());
+    dispatch(getContact());
+  }, [dispatch]);
+
+  const alert = useSelector((state) => state.alert.alert);
+
+  useEffect(() => {
+    if (alert.error === false) {
+      toast.success(alert.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (alert.error === true) {
+      toast.error(alert.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [alert]);
+
+  const { show, func, text } = useSelector(
+    (state) => state.confirmation.confirmation,
+  );
+
+  const followUp = useSelector((state) => state.contact.followUp);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <Confirmation show={show} func={func} text={text} />
+      <CreateFollowUpCard
+        phone={followUp.phone}
+        show={followUp.show}
+        fromContact={followUp.fromContact}
+      />
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Signup} />
+        <HomeRoute path="/" exact component={Dashboard} />
+        <HomeRoute path="/leads" exact component={Leads} />
+        <HomeRoute path="/inventory" exact component={Inventory} />
+        <HomeRoute path="/contacts" exact component={Contacts} />
+        <HomeRoute path="/organizations" exact component={Organization} />
+        <HomeRoute path="/persons" exact component={Persons} />
+        <HomeRoute path="/message" exact component={Message} />
+
+        <HomeRoute path="/createlead" exact component={CreateLead} />
+        <HomeRoute path="/createcontact" exact component={CreateContact} />
+        <HomeRoute path="/createinventory" exact component={CreateInventory} />
+
+        <HomeRoute path="/updatelead" exact component={UpdateLead} />
+        <HomeRoute path="/updateinventory" exact component={UpdateInventory} />
+        <HomeRoute path="/updatecontact" exact component={UpdateContact} />
+
+        <HomeRoute
+          path="/inventorydetails/:id"
+          exact
+          component={InventoryDetails}
+        />
+        <HomeRoute path="/contactdetail/:id" exact component={ContactDetail} />
+      </Switch>
     </div>
   );
 }

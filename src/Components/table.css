@@ -1,0 +1,50 @@
+table {
+  border-spacing: 0;
+  border: 1px solid lightgray;
+  width: 100%;
+  background-color: white;
+}
+
+table > thead > tr > th > div > span > input {
+  border: 1px solid lightgray !important;
+}
+
+table > th,
+td {
+  margin: 0;
+  padding: 0.7rem;
+  border-top: 1px solid lightgray !important;
+  border-bottom: 1px solid lightgray !important;
+  border-right: 1px solid lightgray !important;
+}
+th {
+  text-align: left;
+  font-size: larger;
+  margin: 0;
+  padding: 0.7rem;
+  border-top: 1px solid lightgray !important;
+  border-bottom: 1px solid lightgray !important;
+  border-right: 1px solid lightgray !important;
+}
+
+table > th,
+td:last-child {
+  border-right: 0;
+}
+
+table > tr:last-child > td {
+  border-bottom: 0;
+}
+
+.pagination {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: end;
+}
+
+.pagination > div {
+  background-color: white;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: fit-content;
+}
