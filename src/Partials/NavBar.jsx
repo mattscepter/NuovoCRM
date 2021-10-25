@@ -204,7 +204,7 @@ export default function MiniDrawer({ Component, props }) {
               >
                 <MenuIcon />
               </IconButton>
-              <img src={logo} alt="" style={{ height: '70px' }} />
+              <img src={logo} alt="" style={{ height: '45px' }} />
             </div>
             <div className="flex items-center justify-center sm:mr-4">
               {/* <IconButton
