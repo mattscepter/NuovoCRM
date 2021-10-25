@@ -376,33 +376,42 @@ const ContactDetails = () => {
         {button.lead ? (
           <div className="mt-4">
             <div className="overflow-auto max-h-lead">
-              {data?.allLeads?.map((lead) => {
-                return (
-                  <>
-                    {lead?.stage === filter ? (
-                      <LeadList
-                        setShow={setShowLeadDetails}
-                        lead={lead}
-                        id={data._id}
-                      />
-                    ) : null}
-                    {lead?.status === filter ? (
-                      <LeadList
-                        setShow={setShowLeadDetails}
-                        lead={lead}
-                        id={data._id}
-                      />
-                    ) : null}
-                    {filter === 'All' ? (
-                      <LeadList
-                        setShow={setShowLeadDetails}
-                        lead={lead}
-                        id={data._id}
-                      />
-                    ) : null}
-                  </>
-                );
-              })}
+              {data?.allLeads?.length === 0 ? (
+                <p className="text-2xl mt-4 text-gray-600 ml-2">
+                  No leads available
+                </p>
+              ) : (
+                <>
+                  {' '}
+                  {data?.allLeads?.map((lead) => {
+                    return (
+                      <>
+                        {lead?.stage === filter ? (
+                          <LeadList
+                            setShow={setShowLeadDetails}
+                            lead={lead}
+                            id={data._id}
+                          />
+                        ) : null}
+                        {lead?.status === filter ? (
+                          <LeadList
+                            setShow={setShowLeadDetails}
+                            lead={lead}
+                            id={data._id}
+                          />
+                        ) : null}
+                        {filter === 'All' ? (
+                          <LeadList
+                            setShow={setShowLeadDetails}
+                            lead={lead}
+                            id={data._id}
+                          />
+                        ) : null}
+                      </>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
         ) : null}

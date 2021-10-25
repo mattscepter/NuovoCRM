@@ -45,8 +45,11 @@ const OrganizationDetails = () => {
   const columns = useMemo(() => headCells, []);
 
   return (
-    <div className="flex">
-      <div className="m-10 mr-5 p-7 py-10 bg-white rounded-lg mb-4 w-95">
+    <div className="flex justify-center">
+      <div
+        className="m-10 mr-5 p-7 py-10 bg-white rounded-lg mb-4 w-95 "
+        style={{ height: 'max-content' }}
+      >
         <h1 className="text-3xl font-semibold mb-10 text-center flex items-center justify-center">
           <span>
             <DomainIcon fontSize="large" />
@@ -59,7 +62,10 @@ const OrganizationDetails = () => {
         <DetailCard title="Type" detail={DATA?.type} />
         <DetailCard title="Address" detail={DATA?.address} />
       </div>
-      <div className="m-10 ml-2 p-7 bg-white rounded-lg mb-4 flex-1">
+      <div
+        className="m-10 ml-2 p-7 bg-white rounded-lg mb-4 flex-1 "
+        style={{ height: 'max-content' }}
+      >
         {DATA?.employees?.length === 0 ? (
           <p className="text-2xl">No contact available</p>
         ) : (
