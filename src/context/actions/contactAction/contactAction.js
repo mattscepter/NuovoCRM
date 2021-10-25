@@ -9,7 +9,11 @@ import {
   SET_ORGANIZATION,
   SET_PERSONS,
   SET_UPDATECONTACT,
+  SET_UPDATEORG,
+  SHOW_CONTACTCREATE,
   SHOW_FOLLOWUP,
+  SHOW_LEADCREATE,
+  SHOW_ORGCREATE,
 } from '../../actionTypes';
 import { setAlert } from '../errorActions';
 
@@ -32,20 +36,12 @@ const setOrganization = (data) => ({
   type: SET_ORGANIZATION,
   payload: data,
 });
-const setPerson = (data) => ({
-  type: SET_PERSONS,
-  payload: data,
-});
 
 const addContact = (data) => ({
   type: ADD_CONTACT,
   payload: data,
 });
 
-const deletePerson = (data) => ({
-  type: DELETE_PERSON,
-  payload: data,
-});
 const deleteOrganization = (data) => ({
   type: DELETE_ORGANIZATION,
   payload: data,
@@ -53,6 +49,26 @@ const deleteOrganization = (data) => ({
 
 const createFollowUp = (data) => ({
   type: SHOW_FOLLOWUP,
+  payload: data,
+});
+
+const createleadCard = (data) => ({
+  type: SHOW_LEADCREATE,
+  payload: data,
+});
+
+const createcontactCard = (data) => ({
+  type: SHOW_CONTACTCREATE,
+  payload: data,
+});
+
+const createorgCard = (data) => ({
+  type: SHOW_ORGCREATE,
+  payload: data,
+});
+
+const setUpdateOrg = (data) => ({
+  type: SET_UPDATEORG,
   payload: data,
 });
 
@@ -78,18 +94,7 @@ const getOrganization = () => {
   };
 };
 
-const getPersons = () => {
-  return (dispatch) => {
-    axiosInstance
-      .get('/persons')
-      .then((res) => {
-        dispatch(setPerson(res.data));
-      })
-      .catch((err) => console.log(err));
-  };
-};
-
-const createContact = (values, resetForm, history) => {
+const createContact = (values, resetForm, history, setType) => {
   return (dispatch) => {
     const token = Cookies.get('JWT');
     const user = JSON.parse(localStorage.getItem('user'));
@@ -105,9 +110,21 @@ const createContact = (values, resetForm, history) => {
           setAlert({ message: 'Contact created successfully', error: false }),
         );
         resetForm();
+        dispatch(
+          createcontactCard({
+            show: false,
+            phone: null,
+            fromLead: false,
+          }),
+        );
         history.push(`/contactdetail/${res.data._id}`);
+        setType('');
+        if (values.organization) {
+          dispatch(refreshOrg(values?.organization));
+        }
       })
       .catch((err) => {
+        console.log(err);
         dispatch(setAlert({ message: 'Error creating contact', error: true }));
         resetForm();
       });
@@ -120,20 +137,21 @@ const updateContact = (id, data, resetForm, history) => {
     const token = Cookies.get('JWT');
     const user = JSON.parse(localStorage.getItem('user'));
     axiosInstance
-      .put(`/update-contact/${id}/${user._id}`, data, {
+      .patch(`/update-contact/${id}/${user._id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        dispatch(getContact());
+        dispatch(refreshContact(id));
         resetForm();
-        history.push('/contacts');
+        history.push(`/contactdetail/${id}`);
         dispatch(
           setAlert({ message: 'Contact updated successfully', error: false }),
         );
       })
       .catch((err) => {
+        console.log(err);
         dispatch(setAlert({ message: 'Error updating contact', error: true }));
         resetForm();
       });
@@ -152,8 +170,6 @@ const deleteContact = (data) => {
       })
       .then((res) => {
         dispatch(deletecontact(data));
-        dispatch(deletePerson(data));
-        dispatch(deleteOrganization(data));
         dispatch(
           setAlert({ message: 'Contact deleted successfully', error: false }),
         );
@@ -175,6 +191,17 @@ const refreshContact = (id) => {
   };
 };
 
+const refreshOrg = (id) => {
+  return (dispatch) => {
+    axiosInstance
+      .get(`/organization/${id}`)
+      .then((res) => {
+        dispatch(setUpdateOrg(res.data));
+      })
+      .catch();
+  };
+};
+
 export {
   createContact,
   getContact,
@@ -183,7 +210,11 @@ export {
   updateContact,
   setupdatecontact,
   getOrganization,
-  getPersons,
   refreshContact,
   createFollowUp,
+  createleadCard,
+  createcontactCard,
+  setUpdateOrg,
+  refreshOrg,
+  createorgCard,
 };

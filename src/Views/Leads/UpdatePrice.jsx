@@ -6,13 +6,12 @@ import { setAlert } from '../../context/actions/errorActions';
 import { refreshLead } from '../../context/actions/leadAction/leadActions';
 import axiosInstance from '../../utils/axiosInstance';
 import Select from 'react-select';
-import { refreshContact } from '../../context/actions/contactAction/contactAction';
 
-const UpdatePrice = ({ lead, inventorySku, leadId }) => {
+const UpdatePrice = ({ inventorySku, leadId }) => {
   const token = Cookies.get('JWT');
   const user = JSON.parse(localStorage.getItem('user'));
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.contact.update);
+  const lead = useSelector((state) => state.lead.selectedlead);
 
   const validate = (values) => {
     const errors = {};
@@ -51,7 +50,7 @@ const UpdatePrice = ({ lead, inventorySku, leadId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosInstance
-      .put(`/update-item/${leadId}/${user._id}`, values, {
+      .patch(`/update-item/${leadId}/${user._id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,7 +58,7 @@ const UpdatePrice = ({ lead, inventorySku, leadId }) => {
       .then((res) => {
         console.log(res);
         resetForm();
-        dispatch(refreshContact(data._id));
+        dispatch(refreshLead(leadId));
         dispatch(
           setAlert({ message: 'Item updated successfully', error: false }),
         );

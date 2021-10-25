@@ -114,11 +114,11 @@ const CreateInventory = () => {
 
   return (
     <form className="mt-10 mx-4 flex flex-col items-center">
-      <div className="bg-white flex justify-between items-center p-4 mb-4 w-full">
-        <h2 className="text-xl font-bold m-0">Create Inventory</h2>
+      <div className="bg-white flex justify-between items-center p-4 mb-4 w-full rounded-lg">
+        <h2 className="text-xl font-bold m-0">Update Inventory</h2>
       </div>
       <div className="flex flex-wrap w-full">
-        <div className="bg-white px-4 pt-4  pb-2 flex-1 flex flex-col">
+        <div className="bg-white px-4 pt-4  pb-2 flex-1 flex flex-col rounded-l-lg">
           <lable className=" px-2 text-gray-2 mt-4 text-md font-semibold ">
             Type:
           </lable>
@@ -271,7 +271,7 @@ const CreateInventory = () => {
               <div className="w-full text-sm text-red-400">{errors.gst}</div>
             ) : null}
           </div>
-          <div className="px-2 pt-1 flex flex-col w-full">
+          <div className="px-2 pt-1 mb-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Colour</lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
@@ -284,7 +284,7 @@ const CreateInventory = () => {
             ) : null}
           </div>
         </div>
-        <div className="bg-white p-4 flex-1 flex flex-col">
+        <div className="bg-white p-4 flex-1 flex flex-col rounded-r-lg">
           <div className="px-2 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Brand</lable>
             <input
@@ -390,7 +390,7 @@ const CreateInventory = () => {
             ) : null}
           </div>
         </div>
-        <div className="w-full mt-3 mb-3 flex flex-col bg-white p-4">
+        <div className="w-full mt-3 mb-3 flex flex-col bg-white p-4 rounded-lg">
           <lable className="text-gray-2 text-md font-semibold ">
             Description
           </lable>

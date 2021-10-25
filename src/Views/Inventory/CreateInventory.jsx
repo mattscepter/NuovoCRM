@@ -130,12 +130,12 @@ const CreateInventory = () => {
 
   return (
     <form className="mt-10 mx-4 flex flex-col items-center">
-      <div className="bg-white flex justify-between items-center p-4 mb-4 w-full">
+      <div className="bg-white flex justify-between items-center p-4 mb-4 w-full rounded-lg">
         <h2 className="text-xl font-bold m-0">Create Inventory</h2>
       </div>
       <div className="flex flex-wrap w-full">
-        <div className="bg-white p-4 flex-1 flex flex-col">
-          <lable className=" px-2 text-gray-2 mt-4 text-md font-semibold ">
+        <div className="bg-white p-4 flex-1 flex flex-col rounded-l-lg">
+          <lable className=" px-2 text-gray-2 mt-4 text-md font-semibold  ">
             Type:
           </lable>
           <div className="flex">
@@ -300,7 +300,7 @@ const CreateInventory = () => {
             ) : null}
           </div>
         </div>
-        <div className="bg-white p-4 flex-1 flex flex-col">
+        <div className="bg-white p-4 flex-1 flex flex-col rounded-r-lg">
           <div className="px-2 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Brand</lable>
             <input
@@ -406,7 +406,7 @@ const CreateInventory = () => {
             ) : null}
           </div>
         </div>
-        <div className="w-full mt-3 mb-3 flex flex-col bg-white p-4">
+        <div className="w-full mt-3 mb-3 flex flex-col bg-white p-4 rounded-lg">
           <lable className="text-gray-2 text-md font-semibold ">
             Description
           </lable>

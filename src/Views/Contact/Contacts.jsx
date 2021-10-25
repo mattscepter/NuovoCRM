@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Table from '../../Components/reactTable';
 import {
+  createcontactCard,
   deleteContact,
   getContact,
   setupdatecontact,
@@ -10,7 +11,7 @@ import {
 import DateRangeColumnFilter from '../../utils/dateFilter';
 
 const Contacts = () => {
-  const history = useHistory();
+  const dispatch = useDispatch();
 
   const DATA = useSelector((state) => state.contact.contact);
 
@@ -64,17 +65,21 @@ const Contacts = () => {
   });
 
   const data = useMemo(() => DATA, [DATA]);
-  const customer = useMemo(() => Customer, []);
-  const not_customer = useMemo(() => notCustomer, []);
 
   return (
     <div>
       <div className="mt-10 mx-4">
-        <div className="bg-white flex justify-between items-center p-4 mb-4">
+        <div className="bg-white flex justify-between rounded-lg items-center p-4 mb-4">
           <h2 className="text-xl font-bold m-0">Contacts</h2>
           <button
             onClick={() => {
-              history.push('/createcontact');
+              dispatch(
+                createcontactCard({
+                  show: true,
+                  phone: null,
+                  fromLead: false,
+                }),
+              );
             }}
             className="bg-green-500 hover:bg-green-600 text-white p-4 py-2 rounded-md"
           >
@@ -84,15 +89,16 @@ const Contacts = () => {
         <Table
           columns={columns}
           data={data}
-          customer={customer}
-          not_customer={not_customer}
+          customer={Customer}
+          not_customer={notCustomer}
           deleteFunc={deleteContact}
           update={setupdatecontact}
           path={'/updatecontact'}
           refresh={getContact}
           tablepath={'/contactdetail'}
           text={`Are you sure you want to delete contact? \n All leads will also be deleted.`}
-          isInventory={false}
+          isContact={true}
+          isOrg={false}
         />
       </div>
     </div>

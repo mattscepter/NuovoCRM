@@ -36,7 +36,12 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import DomainIcon from '@mui/icons-material/Domain';
 import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
-import { createFollowUp } from '../context/actions/contactAction/contactAction';
+import {
+  createcontactCard,
+  createFollowUp,
+  createleadCard,
+  createorgCard,
+} from '../context/actions/contactAction/contactAction';
 import axiosInstance from '../utils/axiosInstance';
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -52,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: 'rgb(49, 46, 129,0.7)',
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -78,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: 'rgb(49, 46, 129,0.7)',
+    height: '100%',
+    color: 'white',
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -89,6 +98,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
+    backgroundColor: 'rgb(49, 46, 129,0.8)',
+    height: '100%',
+    color: 'white',
   },
   toolbar: {
     display: 'flex',
@@ -106,33 +118,28 @@ const useStyles = makeStyles((theme) => ({
 const navOptions = [
   {
     title: 'Dashboard',
-    icon: <HomeIcon style={{ fontSize: '30px' }} />,
+    icon: <HomeIcon style={{ fontSize: '30px', color: 'white' }} />,
     path: '/',
   },
   {
-    title: 'All Contacts',
-    icon: <ContactsIcon style={{ fontSize: '30px' }} />,
-    path: '/contacts',
-  },
-  {
     title: 'Organization',
-    icon: <DomainIcon style={{ fontSize: '30px' }} />,
+    icon: <DomainIcon style={{ fontSize: '30px', color: 'white' }} />,
     path: '/organizations',
   },
   {
-    title: 'Persons',
-    icon: <PersonIcon style={{ fontSize: '30px' }} />,
-    path: '/persons',
+    title: 'All Contacts',
+    icon: <ContactsIcon style={{ fontSize: '30px', color: 'white' }} />,
+    path: '/contacts',
   },
 
   {
     title: 'Inventory',
-    icon: <InventoryIcon style={{ fontSize: '30px' }} />,
+    icon: <InventoryIcon style={{ fontSize: '30px', color: 'white' }} />,
     path: '/inventory',
   },
   {
     title: 'Send SMS',
-    icon: <MessageIcon style={{ fontSize: '30px' }} />,
+    icon: <MessageIcon style={{ fontSize: '30px', color: 'white' }} />,
     path: '/message',
   },
 ];
@@ -182,7 +189,6 @@ export default function MiniDrawer({ Component, props }) {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
-        style={{ backgroundColor: '#54a3ff' }}
       >
         <Toolbar>
           <div className="flex justify-between w-full items-center">
@@ -198,10 +204,10 @@ export default function MiniDrawer({ Component, props }) {
               >
                 <MenuIcon />
               </IconButton>
-              <img src={logo} alt="" className="h-16" />
+              <img src={logo} alt="" style={{ height: '70px' }} />
             </div>
             <div className="flex items-center justify-center sm:mr-4">
-              <IconButton
+              {/* <IconButton
                 id="basic-button"
                 aria-controls="basic-menu"
                 aria-haspopup="true"
@@ -289,7 +295,39 @@ export default function MiniDrawer({ Component, props }) {
                     </>
                   );
                 })}
-              </Menu>
+              </Menu> */}
+
+              <Button
+                onClick={() => dispatch(createorgCard({ show: true }))}
+                style={{
+                  textTransform: 'capitalize',
+                  backgroundColor: 'white ',
+                  marginRight: '10px',
+                }}
+              >
+                Create Organization
+                <AddIcon />
+              </Button>
+
+              <Button
+                onClick={() =>
+                  dispatch(
+                    createcontactCard({
+                      show: true,
+                      phone: null,
+                      fromLead: false,
+                    }),
+                  )
+                }
+                style={{
+                  textTransform: 'capitalize',
+                  backgroundColor: 'white ',
+                  marginRight: '10px',
+                }}
+              >
+                Create Contact
+                <AddIcon />
+              </Button>
 
               <Button
                 onClick={() =>
@@ -312,7 +350,15 @@ export default function MiniDrawer({ Component, props }) {
               </Button>
 
               <Button
-                onClick={() => history.push('/createlead')}
+                onClick={() =>
+                  dispatch(
+                    createleadCard({
+                      show: true,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  )
+                }
                 style={{
                   textTransform: 'capitalize',
                   backgroundColor: 'white ',
@@ -386,7 +432,7 @@ export default function MiniDrawer({ Component, props }) {
           >
             <Tooltip title="Logout">
               <ListItemIcon style={{ paddingLeft: '5px' }}>
-                <LogoutIcon style={{ fontSize: '30px' }} />,
+                <LogoutIcon style={{ fontSize: '30px', color: 'white' }} />,
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary={'Logout'} />

@@ -1,27 +1,45 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
-import { createContact } from '../../context/actions/contactAction/contactAction';
+import Select from 'react-select';
+import {
+  createContact,
+  createcontactCard,
+} from '../../context/actions/contactAction/contactAction';
+import axiosInstance from '../../utils/axiosInstance';
+import { Button } from '@material-ui/core';
 
-const CreateContact = () => {
+const CreateContactDetails = ({ type, setType }) => {
   const contactData = useSelector((state) => state.contact.contact);
-  const history = useHistory();
   const [id, setId] = useState(null);
+  const [orgList, setOrgList] = useState([]);
   const dispatch = useDispatch();
+  const history = useHistory();
+  let options = [];
+
+  useEffect(() => {
+    axiosInstance.get('/organizations').then((res) => {
+      setOrgList(res.data);
+    });
+  }, []);
+
+  orgList.forEach((element) => {
+    options.push({ value: element?._id, label: element?.name });
+  });
 
   const validate = (values) => {
     const errors = {};
     if (!values.type) {
       errors.type = '*Required';
     }
-
     if (!values.name) {
       errors.name = '*Required';
     }
-    if (!values.company) {
-      errors.company = '*Required';
+    if (!values.organization) {
+      errors.organization = '*Required';
     }
 
     if (!values.phone) {
@@ -67,85 +85,92 @@ const CreateContact = () => {
     if (!values.zipcode) {
       errors.zipcode = '*Required';
     }
-
     return errors;
   };
 
-  const { getFieldProps, errors, resetForm, values } = useFormik({
-    initialValues: {
-      type: '',
-      company: '',
-      name: '',
-      phone: '',
-      email: '',
-      department: '',
-      title: '',
-      whatsapp_no: '',
-      description: '',
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      zipcode: '',
-      website: '',
+  const { getFieldProps, errors, resetForm, values, setFieldValue } = useFormik(
+    {
+      initialValues: {
+        organization: '',
+        name: '',
+        phone: '',
+        email: '',
+        department: '',
+        title: '',
+        whatsapp_no: '',
+        description: '',
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        zipcode: '',
+        website: '',
+      },
+      validate,
     },
-    validate,
-  });
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values.type === 'Person') {
-      delete values.company;
+    if (type === '2') {
+      dispatch(
+        createContact(
+          {
+            name: values.name,
+            phone: values.phone,
+            email: values.email,
+            whatsapp_no: values.whatsapp_no,
+            description: values.description,
+            street: values.street,
+            city: values.city,
+            state: values.state,
+            country: values.country,
+            zipcode: values.zipcode,
+            website: values.website,
+          },
+          resetForm,
+          history,
+          setType,
+        ),
+      );
+    } else {
+      dispatch(createContact(values, resetForm, history, setType));
     }
-    dispatch(createContact(values, resetForm, history));
   };
 
   return (
-    <div className="mt-10 mx-4 flex flex-col items-center">
-      <div className="bg-white flex justify-between items-center p-4 mb-4 w-full">
-        <h2 className="text-xl font-bold m-0">Create Contact</h2>
-      </div>
+    <div className="flex flex-col items-center">
       <div className="flex flex-wrap w-full">
         <div className="bg-white px-4 pt-4 pb-2 flex-1 flex flex-col">
-          <div className="px-2 flex flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">Type</lable>
-            <select
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              name=""
-              id=""
-              {...getFieldProps('type')}
-            >
-              <option value="" selected style={{ color: 'lightgray' }}>
-                Select type
-              </option>
-              <option value="0">Existing Organization</option>
-              <option value="1">New Organization</option>
-              <option value="2">Individual</option>
-            </select>
-            {errors.type ? (
-              <div className="w-full text-sm text-red-400">{errors.type}</div>
-            ) : null}
-          </div>
-          {values.type === 'Organization' ? (
-            <div className="px-2 mt-3 flex flex-col w-full">
+          {type !== '2' ? (
+            <div className="px-2 mb-3 flex flex-col w-full">
               <lable className="text-gray-2 text-md font-semibold ">
-                Company name
+                Organization
               </lable>
-              <input
-                className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-                type="text"
-                placeholder="Enter name of company"
-                {...getFieldProps('company')}
+              <Select
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 5,
+                  colors: {
+                    ...theme.colors,
+                    primary25: 'lightgray',
+                    primary: 'lightgray',
+                  },
+                })}
+                options={options}
+                onChange={(selectedOption) => {
+                  setFieldValue('organization', selectedOption.value);
+                }}
               />
-              {errors.company ? (
+              {errors.organization ? (
                 <div className="w-full text-sm text-red-400">
-                  {errors.company}
+                  {errors.organization}
                 </div>
               ) : null}
             </div>
           ) : null}
 
-          <div className="px-2 mt-3 flex flex-col w-full">
+          <div className="px-2 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Name</lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
@@ -170,25 +195,34 @@ const CreateContact = () => {
             {errors.phone ? (
               <div className="w-full text-sm text-red-400">{errors.phone}</div>
             ) : null}
-            {errors.phone === 'Contact already exists' ? (
-              <div className="flex justify-end">
-                <Button
-                  onClick={() => {
-                    history.push(`/contactdetail/${id}`);
-                  }}
-                  className="w-max"
-                  style={{
-                    backgroundColor: '#54a3ff',
-                    color: 'white',
-                    textTransform: 'capitalize',
-                    marginTop: '10px',
-                  }}
-                >
-                  Go to contact
-                </Button>
-              </div>
-            ) : null}
           </div>
+          {errors.phone === 'Contact already exists' ? (
+            <div className="flex justify-end">
+              <Button
+                onClick={() => {
+                  history.push(`/contactdetail/${id}`);
+                  dispatch(
+                    createcontactCard({
+                      show: false,
+                      phone: null,
+                      fromLead: false,
+                    }),
+                  );
+                  setType('');
+                }}
+                className="w-max"
+                style={{
+                  backgroundColor: '#54a3ff',
+                  color: 'white',
+                  textTransform: 'capitalize',
+                  marginTop: '10px',
+                }}
+              >
+                Go to contact
+              </Button>
+            </div>
+          ) : null}
+
           <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Email</lable>
             <input
@@ -203,30 +237,33 @@ const CreateContact = () => {
           </div>
         </div>
         <div className="bg-white p-4 flex-1 flex flex-col">
-          {values.type === 'Organization' ? (
-            <div className="px-2 mb-3 flex flex-col w-full">
-              <lable className="text-gray-2 text-md font-semibold ">
-                Department
-              </lable>
-              <input
-                className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-                type="text"
-                placeholder="Enter department"
-                {...getFieldProps('department')}
-              />
-            </div>
+          {type !== '2' ? (
+            <>
+              <div className="px-2 mb-3 flex flex-col w-full">
+                <lable className="text-gray-2 text-md font-semibold ">
+                  Department
+                </lable>
+                <input
+                  className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
+                  type="text"
+                  placeholder="Enter department"
+                  {...getFieldProps('department')}
+                />
+              </div>
+              <div className="px-2 mb-3 flex flex-col w-full">
+                <lable className="text-gray-2 text-md font-semibold ">
+                  Title
+                </lable>
+                <input
+                  className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
+                  type="text"
+                  placeholder="Enter title"
+                  {...getFieldProps('title')}
+                />
+              </div>
+            </>
           ) : null}
-
           <div className="px-2 flex flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">Title</lable>
-            <input
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="text"
-              placeholder="Enter title"
-              {...getFieldProps('title')}
-            />
-          </div>
-          <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">
               Whatsapp number
             </lable>
@@ -242,18 +279,7 @@ const CreateContact = () => {
               </div>
             ) : null}
           </div>
-          <div className="px-2 mt-3 flex flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">
-              Website
-            </lable>
-            <input
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="text"
-              placeholder="Enter whatsapp number"
-              {...getFieldProps('website')}
-            />
-          </div>
-          <div className="p-2 w-full mt-3 mb-3 flex flex-col">
+          <div className="p-2 w-full mt-1 flex flex-col">
             <lable className="text-gray-2 text-md font-semibold ">
               Description
             </lable>
@@ -265,7 +291,7 @@ const CreateContact = () => {
             />
           </div>
         </div>
-        <div className="bg-white px-4 pt-4 pb-2 w-full flex flex-col mt-4">
+        <div className="bg-white px-4 pb-2 w-full flex flex-col mt-2">
           <h3 className="text-lg font-semibold pl-2">Address</h3>
           <div className="flex flex-wrap w-full">
             <div className="flex-col mt-3 flex flex-1 p-2">
@@ -351,7 +377,7 @@ const CreateContact = () => {
       </div>
       <button
         onClick={(e) => handleSubmit(e)}
-        className="bg-green-600 mt-3 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-4 text-white"
+        className="bg-green-600 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-4 mb-0 text-white"
       >
         Save Contact
       </button>
@@ -359,4 +385,4 @@ const CreateContact = () => {
   );
 };
 
-export default CreateContact;
+export default CreateContactDetails;

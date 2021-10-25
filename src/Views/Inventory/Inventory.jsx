@@ -67,7 +67,7 @@ const Inventory = () => {
       Header: 'ISBN Code',
     },
     {
-      accessor: 'updatedAt',
+      accessor: 'createdAt',
       Header: 'Created At',
       Filter: DateRangeColumnFilter,
       filter: 'dateBetween',
@@ -82,7 +82,7 @@ const Inventory = () => {
   return (
     <div className="mt-10 mx-4">
       <UpdateSkuCard show={show} setShow={setShow} />
-      <div className="bg-white flex justify-between items-center p-4 mb-4">
+      <div className="bg-white flex justify-between items-center p-4 mb-4 rounded-lg">
         <h2 className="text-xl font-bold m-0">Inventory</h2>
         <div>
           <button
@@ -114,7 +114,8 @@ const Inventory = () => {
         refresh={getInventory}
         tablepath={'/inventorydetails'}
         text={'Are you sure you want to delete?'}
-        isInventory={true}
+        isContact={false}
+        isOrg={false}
       />
     </div>
   );

@@ -11,10 +11,19 @@ module.exports = {
       },
       colors: {
         'logo-pink': '#E51A4B',
+        white: '#FFFFFF',
       },
       height: {
         '90vh': '94vh',
         95: '95%',
+        lead: '76vh',
+      },
+      width: {
+        100: '30rem',
+        95: '25rem',
+      },
+      maxHeight: {
+        lead: '76vh',
       },
     },
   },

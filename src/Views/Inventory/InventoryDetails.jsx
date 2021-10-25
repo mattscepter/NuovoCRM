@@ -55,7 +55,7 @@ const InventoryDetails = () => {
 
   return (
     <div className="flex">
-      <div className=" m-10 py-10 px-20 bg-white flex-1 w-full">
+      <div className=" m-10 py-10 px-20 bg-white flex-1 w-full rounded-lg">
         <h1 className="text-3xl font-semibold mb-6">Inventory Details</h1>
         <div className="flex items-center w-full justify-between">
           <ReactToPrint
@@ -78,7 +78,7 @@ const InventoryDetails = () => {
             <IconButton
               onClick={() => {
                 dispatch(setupdateinventory(data));
-                history.push('/updateinventory');
+                history.push(`/updateinventory/${data._id}`);
               }}
             >
               <EditIcon />

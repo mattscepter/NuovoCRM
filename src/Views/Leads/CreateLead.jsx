@@ -42,11 +42,13 @@ const CreateLead = () => {
       }
     }
 
-    values.items.forEach((element, index) => {
-      if (!element.item) {
-        errors.items = 'Select all items';
-      }
-    });
+    if (values.items.length !== 0) {
+      values.items.forEach((element, index) => {
+        if (!element.item) {
+          errors.items = 'Select all items';
+        }
+      });
+    }
     return errors;
   };
 
@@ -64,7 +66,7 @@ const CreateLead = () => {
       initialValues: {
         title: '',
         phone: '',
-        items: [{ item: '', quantity: '', updatedSalePrice: '0' }],
+        items: [],
         description: '',
       },
       validate,

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import PreviewIcon from '@mui/icons-material/Preview';
+import React from 'react';
 import { IconButton } from '@material-ui/core';
-import { useHistory } from 'react-router';
 import { useFormik } from 'formik';
 import CheckIcon from '@mui/icons-material/Check';
 import axiosInstance from '../../utils/axiosInstance';
 import Cookies from 'js-cookie';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshContact } from '../../context/actions/contactAction/contactAction';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { setAlert } from '../../context/actions/errorActions';
 import { setConfirmation } from '../../context/actions/confirmationAction';
+import { selectedlead } from '../../context/actions/leadAction/leadActions';
+import { getInventory } from '../../context/actions/inventoryAction/inventoryAction';
 
-const LeadList = ({ setShow, setSelectedLead, lead, id }) => {
+const LeadList = ({ setShow, lead, id }) => {
   const dispatch = useDispatch();
   const { getFieldProps, values, resetForm } = useFormik({
     initialValues: {
@@ -21,16 +21,53 @@ const LeadList = ({ setShow, setSelectedLead, lead, id }) => {
   });
   const token = Cookies.get('JWT');
   const user = JSON.parse(localStorage.getItem('user'));
+  const data = useSelector((state) => state.contact.update);
+
+  const dispatchOrder = () => {
+    axiosInstance
+      .patch(
+        `/dispatch-order/${lead._id}/${user._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        axiosInstance
+          .patch(
+            `/update-stage/${lead._id}/${user._id}`,
+            { stage: 'Dispatched' },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          .then((res) => {
+            resetForm();
+            dispatch(refreshContact(data._id));
+            dispatch(setAlert({ message: 'Order dispatched', error: false }));
+            dispatch(getInventory());
+          })
+          .catch((err) => {
+            dispatch(
+              setAlert({ message: 'Error dispatching order', error: true }),
+            );
+          });
+      });
+  };
 
   return (
     <div>
-      <div className="bg-gray-100 w-full p-4 rounded-md flex justify-between items-center mb-2 cursor-pointer">
+      <div className="bg-gray-100 w-full px-4 py-2 rounded-md flex justify-between items-center mb-2 cursor-pointer">
         <div
           onClick={() => {
             setShow(true);
-            setSelectedLead(lead);
+            dispatch(selectedlead(lead));
           }}
-          className="flex justify-between w-4/6 "
+          className="flex items-center justify-between w-4/6 "
         >
           <div
             className={`${
@@ -41,11 +78,11 @@ const LeadList = ({ setShow, setSelectedLead, lead, id }) => {
                 : 'text-blue-500'
             } flex flex-col`}
           >
-            <p className="text-lg font-semibold">
+            <p className="text-base font-semibold">
               Title:
               <span className="pl-2 font-medium">{lead?.title}</span>
             </p>
-            <p className="text-lg font-semibold">
+            <p className="text-base font-semibold">
               Date:
               <span className="pl-2 font-medium">
                 {new Date(lead?.createdAt).toLocaleString('en-US', {
@@ -63,7 +100,7 @@ const LeadList = ({ setShow, setSelectedLead, lead, id }) => {
         </div>
         <div>
           <select
-            className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
+            className={`p-3 py-1 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
             name=""
             id=""
             {...getFieldProps('stage')}
@@ -85,16 +122,55 @@ const LeadList = ({ setShow, setSelectedLead, lead, id }) => {
               onClick={() => {
                 const token = Cookies.get('JWT');
                 const user = JSON.parse(localStorage.getItem('user'));
-                axiosInstance
-                  .put(`/update-stage/${lead._id}/${user._id}`, values, {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
-                  })
-                  .then((res) => {
-                    resetForm();
-                    dispatch(refreshContact(id));
-                  });
+                if (values.stage === 'Dispatched') {
+                  dispatch(
+                    setConfirmation({
+                      show: true,
+                      func: dispatchOrder,
+                      text: 'Are you sure you want to dispatch order?',
+                    }),
+                  );
+                } else if (
+                  values.stage === 'Invoice' &&
+                  lead?.stage !== 'Dispatched'
+                ) {
+                  dispatch(
+                    setAlert({
+                      message: 'Order not dispatched yet!!!',
+                      error: true,
+                    }),
+                  );
+                } else {
+                  axiosInstance
+                    .patch(
+                      `/update-stage/${lead._id}/${user._id}`,
+                      { stage: values.stage },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      },
+                    )
+                    .then((res) => {
+                      resetForm();
+
+                      if (res.data.stage === 'Invoice') {
+                        axiosInstance
+                          .patch(
+                            `/update-status/${lead._id}/${user._id}`,
+                            { status: 'Completed' },
+                            {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                              },
+                            },
+                          )
+                          .then((res) => {
+                            dispatch(refreshContact(data._id));
+                          });
+                      }
+                    });
+                }
               }}
             >
               <CheckIcon />

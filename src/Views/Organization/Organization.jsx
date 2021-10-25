@@ -6,6 +6,7 @@ import {
   deleteContact,
   getOrganization,
   setupdatecontact,
+  setUpdateOrg,
 } from '../../context/actions/contactAction/contactAction';
 import DateRangeColumnFilter from '../../utils/dateFilter';
 
@@ -24,28 +25,16 @@ const Organization = () => {
 
   const headCells = [
     {
-      accessor: 'company',
-      Header: 'Company',
-    },
-    {
       accessor: 'name',
-      Header: 'Name',
+      Header: 'Organization Name',
     },
     {
-      accessor: 'phone',
-      Header: 'Phone',
+      accessor: 'type',
+      Header: 'Type',
     },
     {
-      accessor: 'email',
-      Header: 'Email',
-    },
-    {
-      accessor: 'whatsapp_no',
-      Header: 'Whatsapp No.',
-    },
-    {
-      accessor: 'department',
-      Header: 'Department',
+      accessor: 'address',
+      Header: 'Address',
     },
     {
       accessor: 'createdAt',
@@ -55,25 +44,13 @@ const Organization = () => {
     },
   ];
   const columns = useMemo(() => headCells, []);
-  const Customer = [];
-  const notCustomer = [];
-
-  DATA.forEach((element) => {
-    if (element.isCustomer) {
-      Customer.push(element);
-    } else {
-      notCustomer.push(element);
-    }
-  });
 
   const data = useMemo(() => DATA, [DATA]);
-  const customer = useMemo(() => Customer, []);
-  const not_customer = useMemo(() => notCustomer, []);
 
   return (
     <div>
       <div className="mt-10 mx-4">
-        <div className="bg-white flex justify-between items-center p-4 mb-4">
+        <div className="bg-white flex justify-between items-center p-4 mb-4 rounded-lg">
           <h2 className="text-xl font-bold m-0">Organizations</h2>
           <button
             onClick={() => {
@@ -87,15 +64,14 @@ const Organization = () => {
         <Table
           columns={columns}
           data={data}
-          customer={customer}
-          not_customer={not_customer}
           deleteFunc={deleteContact}
-          update={setupdatecontact}
+          update={setUpdateOrg}
           path={'/updatecontact'}
           refresh={getOrganization}
-          tablepath={'/contactdetail'}
+          tablepath={'/organizationdetail'}
           text={`Are you sure you want to delete organization? \n All leads will also be deleted.`}
-          isInventory={false}
+          isContact={false}
+          isOrg={false}
         />
       </div>
     </div>

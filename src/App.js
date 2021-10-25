@@ -1,13 +1,12 @@
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import HomeRoute from './Routes/HomeRoute';
-import Dashboard from './Views/Dashboard';
+import Dashboard from './Views/Dashboard/Dashboard';
 import Leads from './Views/Leads/Leads';
 import Message from './Views/Message/Message';
 import Inventory from './Views/Inventory/Inventory';
 import Contacts from './Views/Contact/Contacts';
-import Organization from './Views/Contact/Organization';
-import Persons from './Views/Contact/Person';
+import Organization from './Views/Organization/Organization';
 import CreateLead from './Views/Leads/CreateLead';
 import UpdateLead from './Views/Leads/UpdateLead';
 import CreateContact from './Views/Contact/CreateContact';
@@ -25,19 +24,21 @@ import { getInventory } from './context/actions/inventoryAction/inventoryAction'
 import {
   getContact,
   getOrganization,
-  getPersons,
 } from './context/actions/contactAction/contactAction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Confirmation from './Components/Confirmation';
 import CreateFollowUpCard from './Views/Contact/CreateFollowUpCard';
+import CreateLeadCard from './Views/Leads/CreateLeadCard';
+import CreateContactCard from './Views/Contact/CreateContactCard';
+import OrganizationDetails from './Views/Organization/OrganizationDetails';
+import CreateOrgCard from './Views/Organization/CreateOrgCard';
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getFromStorage());
     dispatch(getOrganization());
-    dispatch(getPersons());
     dispatch(getInventory());
     dispatch(getContact());
   }, [dispatch]);
@@ -73,6 +74,9 @@ function App() {
   );
 
   const followUp = useSelector((state) => state.contact.followUp);
+  const leadCreate = useSelector((state) => state.contact.leadCreate);
+  const contactCreate = useSelector((state) => state.contact.contactCreate);
+  const orgCreate = useSelector((state) => state.contact.orgCreate);
 
   return (
     <div className="">
@@ -94,6 +98,17 @@ function App() {
         show={followUp.show}
         fromContact={followUp.fromContact}
       />
+      <CreateLeadCard
+        phone={leadCreate.phone}
+        show={leadCreate.show}
+        fromContact={leadCreate.fromContact}
+      />
+      <CreateContactCard
+        phone={contactCreate.phone}
+        show={contactCreate.show}
+        fromLead={contactCreate.fromContact}
+      />
+      <CreateOrgCard show={orgCreate.show} />
       <Switch>
         <Route path="/login" component={Login} />
         {/* <Route path="/register" component={Signup} /> */}
@@ -102,7 +117,6 @@ function App() {
         <HomeRoute path="/inventory" exact component={Inventory} />
         <HomeRoute path="/contacts" exact component={Contacts} />
         <HomeRoute path="/organizations" exact component={Organization} />
-        <HomeRoute path="/persons" exact component={Persons} />
         <HomeRoute path="/message" exact component={Message} />
 
         <HomeRoute path="/createlead" exact component={CreateLead} />
@@ -110,8 +124,12 @@ function App() {
         <HomeRoute path="/createinventory" exact component={CreateInventory} />
 
         <HomeRoute path="/updatelead" exact component={UpdateLead} />
-        <HomeRoute path="/updateinventory" exact component={UpdateInventory} />
-        <HomeRoute path="/updatecontact" exact component={UpdateContact} />
+        <HomeRoute
+          path="/updateinventory/:id"
+          exact
+          component={UpdateInventory}
+        />
+        <HomeRoute path="/updatecontact/:id" exact component={UpdateContact} />
 
         <HomeRoute
           path="/inventorydetails/:id"
@@ -119,6 +137,11 @@ function App() {
           component={InventoryDetails}
         />
         <HomeRoute path="/contactdetail/:id" exact component={ContactDetail} />
+        <HomeRoute
+          path="/organizationdetail/:id"
+          exact
+          component={OrganizationDetails}
+        />
         <Redirect from="*" to="/" />
       </Switch>
     </div>

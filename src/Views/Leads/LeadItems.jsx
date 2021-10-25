@@ -7,10 +7,10 @@ import Cookies from 'js-cookie';
 import { useFormik } from 'formik';
 import { setAlert } from '../../context/actions/errorActions';
 import UpdatePrice from './UpdatePrice';
-import { refreshContact } from '../../context/actions/contactAction/contactAction';
 import Select from 'react-select';
+import { refreshLead } from '../../context/actions/leadAction/leadActions';
 
-const LeadItems = ({ data, leadId }) => {
+const LeadItems = ({ leadId }) => {
   const [itemButton, setitemButton] = useState({
     item: true,
     add: false,
@@ -19,16 +19,13 @@ const LeadItems = ({ data, leadId }) => {
   const token = Cookies.get('JWT');
   const user = JSON.parse(localStorage.getItem('user'));
   const inventory = useSelector((state) => state.inventory.inventory);
-
-  const DATA = useSelector((state) => state.contact.update);
-
-  var lead = DATA?.allLeads?.filter((d) => d._id === data?._id)[0];
+  const lead = useSelector((state) => state.lead.selectedlead);
 
   const dispatch = useDispatch();
 
   var inventorySku = [];
 
-  lead?.items.forEach((element) => {
+  lead?.items?.forEach((element) => {
     let inventoryItem = inventory.filter(
       (f) => f?._id === element?.item?._id,
     )[0];
@@ -44,7 +41,7 @@ const LeadItems = ({ data, leadId }) => {
 
   let options = [];
 
-  inventory.forEach((element) => {
+  inventory?.forEach((element) => {
     options.push({
       value: element._id,
       label: element.item_name + '(' + element.article + ')',
@@ -53,7 +50,7 @@ const LeadItems = ({ data, leadId }) => {
 
   const validate = (values) => {
     const errors = {};
-    let inven = inventory.filter((f) => f._id === values?._id)[0]?.sku;
+    let inven = inventory?.filter((f) => f._id === values?._id)[0]?.sku;
     if (!values._id) {
       errors._id = '*Required';
     }
@@ -82,7 +79,7 @@ const LeadItems = ({ data, leadId }) => {
       })
       .then((res) => {
         resetForm();
-        dispatch(refreshContact(leadId));
+        dispatch(refreshLead(lead._id));
         dispatch(
           setAlert({ message: 'Item Added successfully', error: false }),
         );
@@ -152,52 +149,70 @@ const LeadItems = ({ data, leadId }) => {
         </div>
         {itemButton?.item ? (
           <div className="mt-4">
-            {lead?.items.map((item, index) => {
-              return (
-                <div className="flex w-1/2 items-center">
-                  <div className="bg-gray-100 p-1 w-full rounded-lg pl-4 mb-2">
-                    <p>
-                      Item: <span>{inventorySku[index]?.item_name}</span>
-                    </p>
-                    <p>
-                      Article No: <span>{inventorySku[index]?.article}</span>
-                    </p>
-                    <p>
-                      Quantity <span>{item?.quantity}</span>
-                    </p>
-                    <p>
-                      Sale Price:
-                      <span>
-                        {item?.updatedSalePrice === 0
-                          ? inventorySku[index]?.sale_price
-                          : item?.updatedSalePrice}
-                      </span>
-                    </p>
-                  </div>
-                  <div>
-                    <IconButton
-                      onClick={() => {
-                        axiosInstance
-                          .delete(
-                            `/remove-item/${item?.item?._id}/${lead._id}/${user._id}`,
-                            {
-                              headers: {
-                                Authorization: `Bearer ${token}`,
-                              },
-                            },
-                          )
-                          .then((res) => {
-                            dispatch(refreshContact(leadId));
-                          })
-                          .catch((err) => {});
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </div>
-                </div>
-              );
-            })}
+            {lead?.items?.length === 0 ? (
+              <p
+                onClick={() => {
+                  setitemButton({
+                    item: false,
+                    add: true,
+                    price: false,
+                  });
+                }}
+                className="cursor-pointer hover:text-blue-400"
+              >
+                No items available add items
+              </p>
+            ) : (
+              <>
+                {lead?.items?.map((item, index) => {
+                  return (
+                    <div className="flex w-1/2 items-center">
+                      <div className="bg-gray-100 p-1 w-full rounded-lg pl-4 mb-2">
+                        <p>
+                          Item: <span>{inventorySku[index]?.item_name}</span>
+                        </p>
+                        <p>
+                          Article No:{' '}
+                          <span>{inventorySku[index]?.article}</span>
+                        </p>
+                        <p>
+                          Quantity <span>{item?.quantity}</span>
+                        </p>
+                        <p>
+                          Sale Price:
+                          <span>
+                            {item?.updatedSalePrice === 0
+                              ? inventorySku[index]?.sale_price
+                              : item?.updatedSalePrice}
+                          </span>
+                        </p>
+                      </div>
+                      <div>
+                        <IconButton
+                          onClick={() => {
+                            axiosInstance
+                              .delete(
+                                `/remove-item/${item?.item?._id}/${lead._id}/${user._id}`,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                  },
+                                },
+                              )
+                              .then((res) => {
+                                dispatch(refreshLead(leadId));
+                              })
+                              .catch((err) => {});
+                          }}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         ) : null}
         {itemButton?.add ? (

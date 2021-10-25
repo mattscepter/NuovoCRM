@@ -138,7 +138,8 @@ function Table({
   refresh,
   tablepath,
   text,
-  isInventory,
+  isContact,
+  isOrg,
 }) {
   const [dataExport, setdataExport] = useState([]);
   const dispatch = useDispatch();
@@ -253,14 +254,16 @@ function Table({
   // Render the UI for your table
   return (
     <>
-      <div className="w-full flex justify-end bg-white mt-4">
+      <div className="w-full flex justify-end bg-white rounded-t-lg mt-4">
         <div className="flex w-full justify-between items-center">
           <div className="pl-1">
-            <Tooltip title="Refresh">
-              <IconButton onClick={() => dispatch(refresh())}>
-                <Refresh style={{ fontSize: '35px' }} />
-              </IconButton>
-            </Tooltip>
+            {isOrg ? null : (
+              <Tooltip title="Refresh">
+                <IconButton onClick={() => dispatch(refresh())}>
+                  <Refresh style={{ fontSize: '35px' }} />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Export data">
               <IconButton
                 id="basic-button"
@@ -377,7 +380,7 @@ function Table({
           </div>
         </div>
       </div>
-      <div className="px-4 pb-4 bg-white overflow-x-auto">
+      <div className="px-4 pb-4 bg-white overflow-x-auto rounded-b-lg">
         <table {...getTableProps()}>
           <thead>
             <tr>
@@ -394,7 +397,7 @@ function Table({
                     setGlobalFilter={setGlobalFilter}
                   />
                   <div className="flex items-center">
-                    {!isInventory ? (
+                    {isContact ? (
                       <div className="font-semibold">
                         <label>Contact type: </label>
                         <select
@@ -508,7 +511,7 @@ function Table({
                       <IconButton
                         onClick={() => {
                           dispatch(update(data[row.id]));
-                          history.push(path);
+                          history.push(`${path}/${data[row.id]._id}`);
                         }}
                       >
                         <EditIcon />

@@ -69,7 +69,7 @@ const updateInventory = (id, data, resetForm, history) => {
     const token = Cookies.get('JWT');
     const user = JSON.parse(localStorage.getItem('user'));
     axiosInstance
-      .put(`/inventory/${id}/${user._id}`, data, {
+      .patch(`/inventory/${id}/${user._id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
