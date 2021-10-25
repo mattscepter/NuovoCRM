@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { createContact } from '../../context/actions/contactAction/contactAction';
+import { setAlert } from '../../context/actions/errorActions';
 
 const CreateContact = () => {
   const contactData = useSelector((state) => state.contact.contact);
@@ -94,10 +95,14 @@ const CreateContact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values.type === 'Person') {
-      delete values.company;
+    if (Object.keys(errors).length === 0) {
+      if (values.type === 'Person') {
+        delete values.company;
+      }
+      dispatch(createContact(values, resetForm, history));
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
-    dispatch(createContact(values, resetForm, history));
   };
 
   return (

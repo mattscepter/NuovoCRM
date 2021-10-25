@@ -46,35 +46,39 @@ const UpdateSkuCard = ({ show, setShow }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = Cookies.get('JWT');
-    const user = JSON.parse(localStorage.getItem('user'));
-    axiosInstance
-      .patch(
-        `/inventory/${values.id}/${user._id}`,
-        { sku: values.sku },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+    if (Object.keys(errors).length === 0) {
+      const token = Cookies.get('JWT');
+      const user = JSON.parse(localStorage.getItem('user'));
+      axiosInstance
+        .patch(
+          `/inventory/${values.id}/${user._id}`,
+          { sku: values.sku },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      )
-      .then((res) => {
-        setShow(false);
-        dispatch(getInventory());
-        resetForm();
-        dispatch(
-          setAlert({
-            message: 'Inventory updated successfully',
-            error: false,
-          }),
-        );
-      })
-      .catch((err) => {
-        dispatch(
-          setAlert({ message: 'Error updating inventory', error: true }),
-        );
-        resetForm();
-      });
+        )
+        .then((res) => {
+          setShow(false);
+          dispatch(getInventory());
+          resetForm();
+          dispatch(
+            setAlert({
+              message: 'Inventory updated successfully',
+              error: false,
+            }),
+          );
+        })
+        .catch((err) => {
+          dispatch(
+            setAlert({ message: 'Error updating inventory', error: true }),
+          );
+          resetForm();
+        });
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   useEffect(() => {

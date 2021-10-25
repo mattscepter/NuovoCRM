@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import axiosInstance from '../../utils/axiosInstance';
 import { setAlert } from '../../context/actions/errorActions';
 import Select from 'react-select';
+import { createcontactCard } from '../../context/actions/contactAction/contactAction';
 
 const Message = () => {
   const contact = useSelector((state) => state.contact.contact);
@@ -35,28 +36,32 @@ const Message = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem('user'));
-    const token = Cookies.get('JWT');
-    axiosInstance
-      .post(
-        `/send-sms/${values.contact}/${user._id}`,
-        { message: values.message },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+    if (Object.keys(errors).length === 0) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = Cookies.get('JWT');
+      axiosInstance
+        .post(
+          `/send-sms/${values.contact}/${user._id}`,
+          { message: values.message },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      )
-      .then((res) => {
-        resetForm();
-        dispatch(
-          setAlert({ message: 'Message sent successfully', error: false }),
-        );
-      })
-      .catch((err) => {
-        resetForm();
-        dispatch(setAlert({ message: 'Error sending message', error: true }));
-      });
+        )
+        .then((res) => {
+          resetForm();
+          dispatch(
+            setAlert({ message: 'Message sent successfully', error: false }),
+          );
+        })
+        .catch((err) => {
+          resetForm();
+          dispatch(setAlert({ message: 'Error sending message', error: true }));
+        });
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   let options = [];
@@ -76,18 +81,24 @@ const Message = () => {
   return (
     <div>
       <div className="mt-10 mx-4">
-        <div className="bg-white lg:w-1/2 flex justify-between items-center p-4 mb-4">
+        <div className="bg-white lg:w-1/2 flex justify-between items-center p-4 mb-4 rounded-lg">
           <h2 className="text-xl font-bold m-0">Message</h2>
           <button
             onClick={() => {
-              history.push('/createcontact');
+              dispatch(
+                createcontactCard({
+                  show: true,
+                  phone: null,
+                  fromLead: false,
+                }),
+              );
             }}
             className="bg-green-500 hover:bg-green-600 text-white p-4 py-2 rounded-md"
           >
             Create Contact
           </button>
         </div>
-        <div className="bg-white lg:w-1/2 p-4 flex-1 flex flex-col">
+        <div className="bg-white lg:w-1/2 p-4 flex-1 flex flex-col rounded-lg">
           <div className="px-2 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">
               Select Contact

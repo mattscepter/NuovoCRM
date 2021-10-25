@@ -49,23 +49,27 @@ const UpdatePrice = ({ inventorySku, leadId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosInstance
-      .patch(`/update-item/${leadId}/${user._id}`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        resetForm();
-        dispatch(refreshLead(leadId));
-        dispatch(
-          setAlert({ message: 'Item updated successfully', error: false }),
-        );
-      })
-      .catch((err) => {
-        dispatch(setAlert({ message: 'Error updating item', error: true }));
-      });
+    if (Object.keys(errors).length === 0) {
+      axiosInstance
+        .patch(`/update-item/${leadId}/${user._id}`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          resetForm();
+          dispatch(refreshLead(leadId));
+          dispatch(
+            setAlert({ message: 'Item updated successfully', error: false }),
+          );
+        })
+        .catch((err) => {
+          dispatch(setAlert({ message: 'Error updating item', error: true }));
+        });
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import {
 } from '../../context/actions/contactAction/contactAction';
 import Select from 'react-select';
 import axiosInstance from '../../utils/axiosInstance';
+import { setAlert } from '../../context/actions/errorActions';
 
 const CreateContact = () => {
   const dispatch = useDispatch();
@@ -69,7 +70,11 @@ const CreateContact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateContact(update._id, values, resetForm, history));
+    if (Object.keys(errors).length === 0) {
+      dispatch(updateContact(update._id, values, resetForm, history));
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   useEffect(() => {
@@ -106,8 +111,6 @@ const CreateContact = () => {
       });
     }
   }, [data, setValues]);
-
-  console.log(values);
 
   return (
     <div className="mt-10 mx-4 flex flex-col items-center">

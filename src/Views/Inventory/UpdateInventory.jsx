@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { setAlert } from '../../context/actions/errorActions';
 import {
   createInventory,
   updateInventory,
@@ -89,27 +90,31 @@ const CreateInventory = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    var todayDate = new Date().toISOString().slice(0, 10);
-    var newdata = {
-      type: values.type,
-      item_name: values.item_name,
-      sku: values.sku,
-      article: values.article,
-      length: values.length,
-      width: values.width,
-      height: values.height,
-      brand: values.brand,
-      manufacturer: values.manufacturer,
-      hsn_code: values.hsn_code,
-      mpn_code: values.mpn_code,
-      isbn_code: values.isbn_code,
-      description: values.description,
-      colour: values.colour,
-      gst: values.gst,
-      date: todayDate,
-    };
-    dispatch(updateInventory(update._id, newdata, resetForm, history));
-    imgRef.current.value = '';
+    if (Object.keys(errors).length === 0) {
+      var todayDate = new Date().toISOString().slice(0, 10);
+      var newdata = {
+        type: values.type,
+        item_name: values.item_name,
+        sku: values.sku,
+        article: values.article,
+        length: values.length,
+        width: values.width,
+        height: values.height,
+        brand: values.brand,
+        manufacturer: values.manufacturer,
+        hsn_code: values.hsn_code,
+        mpn_code: values.mpn_code,
+        isbn_code: values.isbn_code,
+        description: values.description,
+        colour: values.colour,
+        gst: values.gst,
+        date: todayDate,
+      };
+      dispatch(updateInventory(update._id, newdata, resetForm, history));
+      imgRef.current.value = '';
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   return (

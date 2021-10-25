@@ -61,6 +61,7 @@ const FollowUpList = ({ fupFilter, fup }) => {
                 </p>
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -134,6 +135,7 @@ const FollowUpList = ({ fupFilter, fup }) => {
                 </p>
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -211,6 +213,7 @@ const FollowUpList = ({ fupFilter, fup }) => {
               <div className="flex items-center">
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -273,6 +276,7 @@ const FollowUpList = ({ fupFilter, fup }) => {
               <div className="flex items-center">
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',

@@ -83,67 +83,71 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = Cookies.get('JWT');
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (fromContact) {
-      axiosInstance
-        .post(
-          `/create-lead/${user._id}`,
-          {
-            title: values.title,
-            phone: phone,
-            items: values.items,
-            description: values.description,
-          },
-          {
+    if (Object.keys(errors).length === 0) {
+      const token = Cookies.get('JWT');
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (fromContact) {
+        axiosInstance
+          .post(
+            `/create-lead/${user._id}`,
+            {
+              title: values.title,
+              phone: phone,
+              items: values.items,
+              description: values.description,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          .then((res) => {
+            dispatch(
+              createleadCard({
+                show: false,
+                phone: null,
+                fromContact: false,
+              }),
+            );
+            resetForm();
+            dispatch(refreshContact(currentContact?._id));
+            dispatch(
+              setAlert({ message: 'Lead created successfully', error: false }),
+            );
+          })
+          .catch((err) => {
+            dispatch(setAlert({ message: 'Error creating lead', error: true }));
+            resetForm();
+          });
+      } else {
+        axiosInstance
+          .post(`/create-lead/${user._id}`, values, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
-        )
-        .then((res) => {
-          dispatch(
-            createleadCard({
-              show: false,
-              phone: null,
-              fromContact: false,
-            }),
-          );
-          resetForm();
-          dispatch(refreshContact(currentContact?._id));
-          dispatch(
-            setAlert({ message: 'Lead created successfully', error: false }),
-          );
-        })
-        .catch((err) => {
-          dispatch(setAlert({ message: 'Error creating lead', error: true }));
-          resetForm();
-        });
+          })
+          .then((res) => {
+            dispatch(
+              createleadCard({
+                show: false,
+                phone: null,
+                fromContact: false,
+              }),
+            );
+            resetForm();
+            dispatch(refreshContact(currentContact?._id));
+            dispatch(
+              setAlert({ message: 'Lead created successfully', error: false }),
+            );
+          })
+          .catch((err) => {
+            dispatch(setAlert({ message: 'Error creating lead', error: true }));
+            resetForm();
+          });
+      }
     } else {
-      axiosInstance
-        .post(`/create-lead/${user._id}`, values, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          dispatch(
-            createleadCard({
-              show: false,
-              phone: null,
-              fromContact: false,
-            }),
-          );
-          resetForm();
-          dispatch(refreshContact(currentContact?._id));
-          dispatch(
-            setAlert({ message: 'Lead created successfully', error: false }),
-          );
-        })
-        .catch((err) => {
-          dispatch(setAlert({ message: 'Error creating lead', error: true }));
-          resetForm();
-        });
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
   };
 

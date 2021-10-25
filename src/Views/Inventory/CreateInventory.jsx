@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { setAlert } from '../../context/actions/errorActions';
 import { createInventory } from '../../context/actions/inventoryAction/inventoryAction';
 
 const CreateInventory = () => {
@@ -101,32 +102,33 @@ const CreateInventory = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const formdata = new FormData();
-    var todayDate = new Date().toISOString().slice(0, 10);
-    formdata.append('type', values.type);
-    formdata.append('item_name', values.item_name);
-    formdata.append('sku', values.sku);
-    formdata.append('article', values.article);
-    formdata.append('length', values.length);
-    formdata.append('width', values.width);
-    formdata.append('height', values.height);
-    formdata.append('brand', values.brand);
-    formdata.append('manufacturer', values.manufacturer);
-    formdata.append('hsn_code', values.hsn_code);
-    formdata.append('sale_price', values.sale_price);
-    formdata.append('purchase_price', values.purchase_price);
-    formdata.append('mpn_code', values.mpn_code);
-    formdata.append('isbn_code', values.isbn_code);
-    formdata.append('image', values.image);
-    formdata.append('gst', values.gst);
-    formdata.append('colour', values.colour);
-    formdata.append('date', todayDate);
-    dispatch(createInventory(formdata, resetForm, history));
-    imgRef.current.value = '';
+    if (Object.keys(errors).length === 0) {
+      const formdata = new FormData();
+      var todayDate = new Date().toISOString().slice(0, 10);
+      formdata.append('type', values.type);
+      formdata.append('item_name', values.item_name);
+      formdata.append('sku', values.sku);
+      formdata.append('article', values.article);
+      formdata.append('length', values.length);
+      formdata.append('width', values.width);
+      formdata.append('height', values.height);
+      formdata.append('brand', values.brand);
+      formdata.append('manufacturer', values.manufacturer);
+      formdata.append('hsn_code', values.hsn_code);
+      formdata.append('sale_price', values.sale_price);
+      formdata.append('purchase_price', values.purchase_price);
+      formdata.append('mpn_code', values.mpn_code);
+      formdata.append('isbn_code', values.isbn_code);
+      formdata.append('image', values.image);
+      formdata.append('gst', values.gst);
+      formdata.append('colour', values.colour);
+      formdata.append('date', todayDate);
+      dispatch(createInventory(formdata, resetForm, history));
+      imgRef.current.value = '';
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
-
-  console.log(values);
 
   return (
     <form className="mt-10 mx-4 flex flex-col items-center">

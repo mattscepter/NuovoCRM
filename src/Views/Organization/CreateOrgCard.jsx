@@ -55,38 +55,42 @@ const CreateOrgCard = ({ show }) => {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = Cookies.get('JWT');
-    const user = JSON.parse(localStorage.getItem('user'));
-    axiosInstance
-      .post(
-        `/create-organization/${user._id}`,
-        {
-          name: values.name,
-          type: values.type,
-          address: `${values.street}, ${values.city}, ${values.state}, ${values.country}, ${values.zipcode}`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+    if (Object.keys(errors).length === 0) {
+      const token = Cookies.get('JWT');
+      const user = JSON.parse(localStorage.getItem('user'));
+      axiosInstance
+        .post(
+          `/create-organization/${user._id}`,
+          {
+            name: values.name,
+            type: values.type,
+            address: `${values.street}, ${values.city}, ${values.state}, ${values.country}, ${values.zipcode}`,
           },
-        },
-      )
-      .then((res) => {
-        resetForm();
-        dispatch(createorgCard({ show: false }));
-        dispatch(getOrganization());
-        dispatch(
-          setAlert({
-            message: 'Organization Created Successfully',
-            error: false,
-          }),
-        );
-      })
-      .catch((err) => {
-        dispatch(
-          setAlert({ message: 'Error creating organization', error: true }),
-        );
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        .then((res) => {
+          resetForm();
+          dispatch(createorgCard({ show: false }));
+          dispatch(getOrganization());
+          dispatch(
+            setAlert({
+              message: 'Organization Created Successfully',
+              error: false,
+            }),
+          );
+        })
+        .catch((err) => {
+          dispatch(
+            setAlert({ message: 'Error creating organization', error: true }),
+          );
+        });
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   return (

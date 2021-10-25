@@ -40,56 +40,64 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
         text: '',
       },
       validate,
+      onSubmit: {},
     },
   );
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (fromContact) {
-      axiosInstance
-        .post(
-          `/create-followup/${user._id}`,
-          { phone: phone, date: values.date, text: values.text },
-          {
+    if (Object.keys(errors).length === 0) {
+      if (fromContact) {
+        axiosInstance
+          .post(
+            `/create-followup/${user._id}`,
+            { phone: phone, date: values.date, text: values.text },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          .then((res) => {
+            resetForm();
+            if (data._id !== undefined) {
+              dispatch(refreshContact(data._id));
+            }
+            dispatch(
+              createFollowUp({ show: false, phone: null, fromContact: false }),
+            );
+            dispatch(setAlert({ message: 'FollowUp created', error: false }));
+          })
+          .catch((err) => {
+            dispatch(
+              setAlert({ message: 'Error creating followup', error: true }),
+            );
+          });
+      } else {
+        axiosInstance
+          .post(`/create-followup/${user._id}`, values, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
-        )
-        .then((res) => {
-          resetForm();
-          dispatch(refreshContact(data._id));
-          dispatch(
-            createFollowUp({ show: false, phone: null, fromContact: false }),
-          );
-          dispatch(setAlert({ message: 'FollowUp created', error: false }));
-        })
-        .catch((err) => {
-          dispatch(
-            setAlert({ message: 'Error creating followup', error: true }),
-          );
-        });
+          })
+          .then((res) => {
+            console.log(res);
+            resetForm();
+            dispatch(refreshContact(data._id));
+            dispatch(
+              createFollowUp({ show: false, phone: null, fromContact: false }),
+            );
+            dispatch(setAlert({ message: 'FollowUp created', error: false }));
+          })
+          .catch((err) => {
+            dispatch(
+              setAlert({ message: 'Error creating followup', error: true }),
+            );
+          });
+      }
     } else {
-      axiosInstance
-        .post(`/create-followup/${user._id}`, values, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          resetForm();
-          dispatch(refreshContact(data._id));
-          dispatch(
-            createFollowUp({ show: false, phone: null, fromContact: false }),
-          );
-          dispatch(setAlert({ message: 'FollowUp created', error: false }));
-        })
-        .catch((err) => {
-          dispatch(
-            setAlert({ message: 'Error creating followup', error: true }),
-          );
-        });
+      dispatch(setAlert({ message: 'FIll fields properly', error: true }));
     }
   };
 

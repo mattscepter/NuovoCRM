@@ -11,6 +11,7 @@ import {
 } from '../../context/actions/contactAction/contactAction';
 import axiosInstance from '../../utils/axiosInstance';
 import { Button } from '@material-ui/core';
+import { setAlert } from '../../context/actions/errorActions';
 
 const CreateContactDetails = ({ type, setType }) => {
   const contactData = useSelector((state) => state.contact.contact);
@@ -112,29 +113,33 @@ const CreateContactDetails = ({ type, setType }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (type === '2') {
-      dispatch(
-        createContact(
-          {
-            name: values.name,
-            phone: values.phone,
-            email: values.email,
-            whatsapp_no: values.whatsapp_no,
-            description: values.description,
-            street: values.street,
-            city: values.city,
-            state: values.state,
-            country: values.country,
-            zipcode: values.zipcode,
-            website: values.website,
-          },
-          resetForm,
-          history,
-          setType,
-        ),
-      );
+    if (Object.keys(errors).length === 0) {
+      if (type === '2') {
+        dispatch(
+          createContact(
+            {
+              name: values.name,
+              phone: values.phone,
+              email: values.email,
+              whatsapp_no: values.whatsapp_no,
+              description: values.description,
+              street: values.street,
+              city: values.city,
+              state: values.state,
+              country: values.country,
+              zipcode: values.zipcode,
+              website: values.website,
+            },
+            resetForm,
+            history,
+            setType,
+          ),
+        );
+      } else {
+        dispatch(createContact(values, resetForm, history, setType));
+      }
     } else {
-      dispatch(createContact(values, resetForm, history, setType));
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
   };
 

@@ -77,6 +77,7 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                 </p>
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -162,6 +163,7 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                 </p>
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -237,7 +239,7 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                   <span className="font-light mr-2">Opening Remark:</span>
                   {fup?.text}
                 </p>
-                <p className="border-b-2 pr-4 w-max">
+                <p className="w-max">
                   {name?.name +
                     '(' +
                     (name?.organization
@@ -251,6 +253,8 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
               <div className="flex items-center">
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
+
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
@@ -326,6 +330,8 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
               <div className="flex items-center">
                 <p>
                   {new Date(fup?.date).toLocaleString('en-US', {
+                    timeZone: 'UTC',
+
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',

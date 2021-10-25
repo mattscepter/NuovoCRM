@@ -71,22 +71,26 @@ const LeadItems = ({ leadId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosInstance
-      .post(`/add-item/${lead._id}/${user._id}`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        resetForm();
-        dispatch(refreshLead(lead._id));
-        dispatch(
-          setAlert({ message: 'Item Added successfully', error: false }),
-        );
-      })
-      .catch((err) => {
-        dispatch(setAlert({ message: 'Error adding item', error: true }));
-      });
+    if (Object.keys(errors).length === 0) {
+      axiosInstance
+        .post(`/add-item/${lead._id}/${user._id}`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          resetForm();
+          dispatch(refreshLead(lead._id));
+          dispatch(
+            setAlert({ message: 'Item Added successfully', error: false }),
+          );
+        })
+        .catch((err) => {
+          dispatch(setAlert({ message: 'Error adding item', error: true }));
+        });
+    } else {
+      dispatch(setAlert({ message: 'Fill fields properly', error: true }));
+    }
   };
 
   return (

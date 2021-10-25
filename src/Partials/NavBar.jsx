@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    backgroundColor: 'rgb(49, 46, 129,0.7)',
+    backgroundColor: 'rgb(73, 71, 129)',
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: 'rgb(49, 46, 129,0.7)',
+    backgroundColor: 'rgb(73, 71, 129)',
     height: '100%',
     color: 'white',
   },
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
-    backgroundColor: 'rgb(49, 46, 129,0.8)',
+    backgroundColor: 'rgb(73, 71, 129)',
     height: '100%',
     color: 'white',
   },
