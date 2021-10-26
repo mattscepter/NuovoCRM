@@ -9,7 +9,6 @@ import Contacts from './Views/Contact/Contacts';
 import Organization from './Views/Organization/Organization';
 import CreateLead from './Views/Leads/CreateLead';
 import UpdateLead from './Views/Leads/UpdateLead';
-import CreateContact from './Views/Contact/CreateContact';
 import UpdateContact from './Views/Contact/UpdateContact';
 import ContactDetail from './Views/Contact/ContactDetail';
 import CreateInventory from './Views/Inventory/CreateInventory';
@@ -120,7 +119,6 @@ function App() {
         <HomeRoute path="/message" exact component={Message} />
 
         <HomeRoute path="/createlead" exact component={CreateLead} />
-        <HomeRoute path="/createcontact" exact component={CreateContact} />
         <HomeRoute path="/createinventory" exact component={CreateInventory} />
 
         <HomeRoute path="/updatelead" exact component={UpdateLead} />

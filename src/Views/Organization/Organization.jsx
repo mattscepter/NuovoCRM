@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Table from '../../Components/reactTable';
 import {
+  createorgCard,
   deleteContact,
   getOrganization,
   setupdatecontact,
@@ -11,7 +12,7 @@ import {
 import DateRangeColumnFilter from '../../utils/dateFilter';
 
 const Organization = () => {
-  const history = useHistory();
+  const dispatch = useDispatch();
 
   const DATA = useSelector((state) => state.contact.organizations);
 
@@ -54,11 +55,11 @@ const Organization = () => {
           <h2 className="text-xl font-bold m-0">Organizations</h2>
           <button
             onClick={() => {
-              history.push('/createcontact');
+              dispatch(createorgCard({ show: true }));
             }}
             className="bg-green-500 hover:bg-green-600 text-white p-4 py-2 rounded-md"
           >
-            Create Contact
+            Create Organization
           </button>
         </div>
         <Table

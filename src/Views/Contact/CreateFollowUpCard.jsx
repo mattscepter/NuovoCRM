@@ -47,7 +47,7 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && values.date !== '') {
       if (fromContact) {
         axiosInstance
           .post(
