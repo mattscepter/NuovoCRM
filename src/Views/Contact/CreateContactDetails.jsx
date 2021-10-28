@@ -33,13 +33,12 @@ const CreateContactDetails = ({ type, setType }) => {
 
   const validate = (values) => {
     const errors = {};
-    if (!values.type) {
-      errors.type = '*Required';
-    }
     if (!values.name) {
       errors.name = '*Required';
     }
-    if (!values.organization) {
+    if (type === '2') {
+      delete errors.organization;
+    } else if (!values.organization) {
       errors.organization = '*Required';
     }
 
@@ -67,7 +66,7 @@ const CreateContactDetails = ({ type, setType }) => {
       errors.email = 'Invalid email address';
     }
     if (values.whatsapp_no.toString().length === 0) {
-      errors.whatsapp_no = '';
+      delete errors.whatsapp_no;
     } else if (values.whatsapp_no.toString().length !== 10) {
       errors.whatsapp_no = 'Length should be 10';
     }
@@ -113,7 +112,7 @@ const CreateContactDetails = ({ type, setType }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && values.name !== '') {
       if (type === '2') {
         dispatch(
           createContact(
@@ -142,6 +141,8 @@ const CreateContactDetails = ({ type, setType }) => {
       dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
   };
+
+  console.log(errors);
 
   return (
     <div className="flex flex-col items-center">

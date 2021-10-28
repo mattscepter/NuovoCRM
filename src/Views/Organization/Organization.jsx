@@ -47,6 +47,16 @@ const Organization = () => {
   const columns = useMemo(() => headCells, []);
 
   const data = useMemo(() => DATA, [DATA]);
+  const Customer = [];
+  const notCustomer = [];
+
+  DATA?.forEach((element) => {
+    if (element.isCustomer) {
+      Customer.push(element);
+    } else {
+      notCustomer.push(element);
+    }
+  });
 
   return (
     <div>
@@ -65,13 +75,15 @@ const Organization = () => {
         <Table
           columns={columns}
           data={data}
+          customer={Customer}
+          not_customer={notCustomer}
           deleteFunc={deleteContact}
           update={setUpdateOrg}
           path={'/updatecontact'}
           refresh={getOrganization}
           tablepath={'/organizationdetail'}
           text={`Are you sure you want to delete organization? \n All leads will also be deleted.`}
-          isContact={false}
+          isContact={true}
           isOrg={false}
         />
       </div>

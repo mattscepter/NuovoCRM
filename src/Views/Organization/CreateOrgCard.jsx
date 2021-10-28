@@ -55,7 +55,7 @@ const CreateOrgCard = ({ show }) => {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && values.name !== '') {
       const token = Cookies.get('JWT');
       const user = JSON.parse(localStorage.getItem('user'));
       axiosInstance

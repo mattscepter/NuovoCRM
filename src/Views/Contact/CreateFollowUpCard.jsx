@@ -29,11 +29,15 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
     if (!values.date) {
       errors.date = '*Required';
     }
+    if (!values.text) {
+      errors.text = '*Required';
+    }
+
     return errors;
   };
 
-  const { getFieldProps, errors, values, setFieldValue, resetForm } = useFormik(
-    {
+  const { getFieldProps, errors, values, setFieldValue, resetForm, setValues } =
+    useFormik({
       initialValues: {
         phone: phone,
         date: '',
@@ -41,8 +45,7 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
       },
       validate,
       onSubmit: {},
-    },
-  );
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -124,15 +127,16 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
       <div className="bg-white w-1/4 pb-2 rounded-t-lg items-center">
         <div className="w-full flex justify-end">
           <IconButton
-            onClick={() =>
+            onClick={() => {
+              resetForm();
               dispatch(
                 createFollowUp({
                   show: false,
                   phone: null,
                   fromContact: false,
                 }),
-              )
-            }
+              );
+            }}
           >
             <CloseIcon />
           </IconButton>
@@ -178,6 +182,9 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
                 placeholder="Enter opening remark"
                 {...getFieldProps('text')}
               />
+              {errors.text ? (
+                <div className="w-full text-sm text-red-400">{errors.text}</div>
+              ) : null}
             </div>
             <div className="px-2 mt-3 flex flex-col w-full">
               <lable className="text-gray-2 text-md font-semibold ">

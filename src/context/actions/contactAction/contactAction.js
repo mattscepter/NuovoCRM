@@ -105,6 +105,7 @@ const createContact = (values, resetForm, history, setType) => {
         },
       })
       .then((res) => {
+        console.log(res);
         dispatch(addContact(res.data));
         dispatch(
           setAlert({ message: 'Contact created successfully', error: false }),
@@ -158,7 +159,7 @@ const updateContact = (id, data, resetForm, history) => {
   };
 };
 
-const deleteContact = (data) => {
+const deleteContact = (data, id) => {
   return (dispatch) => {
     const token = Cookies.get('JWT');
     const user = JSON.parse(localStorage.getItem('user'));

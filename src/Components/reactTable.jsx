@@ -76,46 +76,33 @@ function GlobalFilter({
 }
 
 function dateBetweenFilterFn(rows, id, filterValues) {
-  let sd = new Date(filterValues[0]);
-  let ed = new Date(filterValues[1]);
-  console.log(rows, id, filterValues);
-  return rows.filter((r) => {
-    var time = new Date(r.values[id]);
-    console.log(time, ed, sd);
-    if (filterValues.length === 0) return rows;
-    return time >= sd && time <= ed;
-  });
-}
+  let sd = filterValues[0]
+    ? new Date(filterValues[0]).toDateString()
+    : undefined;
+  let ed = filterValues[1]
+    ? new Date(
+        new Date(filterValues[1]).setDate(
+          new Date(filterValues[1]).getDate() - 1,
+        ),
+      ).toDateString()
+    : undefined;
 
-function SelectColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
-}) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
-  const options = React.useMemo(() => {
-    const options = new Set();
-    preFilteredRows.forEach((row) => {
-      options.add(row.values[id]);
+  console.log(sd, ed);
+
+  if (ed || sd) {
+    return rows.filter((r) => {
+      var time = new Date(r.values[id]).toDateString();
+      if (ed && sd) {
+        return time >= sd && time <= ed;
+      } else if (sd) {
+        return time >= sd;
+      } else if (ed) {
+        return time <= ed;
+      }
     });
-    return [...options.values()];
-  }, [id, preFilteredRows]);
-
-  // Render a multi-select box
-  return (
-    <select
-      value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
-      }}
-    >
-      <option value="">All</option>
-      {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
+  } else {
+    return rows;
+  }
 }
 
 dateBetweenFilterFn.autoRemove = (val) => !val;
@@ -490,34 +477,39 @@ function Table({
                       );
                     })}
                   </>
-                  <td className="w-max p-1 px-0">
-                    <div className="flex justify-evenly items-center">
-                      <IconButton
-                        onClick={() => {
-                          dispatch(
-                            setConfirmation({
-                              show: true,
-                              text: text,
-                              func: () => {
-                                dispatch(deleteFunc(data[row.id]._id));
-                              },
-                            }),
-                          );
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <div className="h-6 bg-gray-300 border border-r-1"></div>
-                      <IconButton
-                        onClick={() => {
-                          dispatch(update(data[row.id]));
-                          history.push(`${path}/${data[row.id]._id}`);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
-                  </td>
+                  {tablepath !== '/organizationdetail' ? (
+                    <>
+                      {' '}
+                      <td className="w-max p-1 px-0">
+                        <div className="flex justify-evenly items-center">
+                          <IconButton
+                            onClick={() => {
+                              dispatch(
+                                setConfirmation({
+                                  show: true,
+                                  text: text,
+                                  func: () => {
+                                    dispatch(deleteFunc(data[row.id]._id));
+                                  },
+                                }),
+                              );
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <div className="h-6 bg-gray-300 border border-r-1"></div>
+                          <IconButton
+                            onClick={() => {
+                              dispatch(update(data[row.id]));
+                              history.push(`${path}/${data[row.id]._id}`);
+                            }}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </div>
+                      </td>
+                    </>
+                  ) : null}
                 </tr>
               );
             })}

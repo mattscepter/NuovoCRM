@@ -82,7 +82,7 @@ const OrderForm = ({ componentRef, lead }) => {
                 <th>Unit Price</th>
                 <th>Amount</th>
               </tr>
-              {lead?.items.map((item, index) => {
+              {lead?.items?.map((item, index) => {
                 let inven = inventory.filter(
                   (f) => f._id === item?.item?._id,
                 )[0];

@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import ReactToPrint from 'react-to-print';
 import {
   createFollowUp,
   createleadCard,
@@ -20,6 +19,7 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FollowUpList from './FollowUpList';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 const DetailCard = ({ title, detail }) => {
   return (
@@ -188,8 +188,13 @@ const ContactDetails = () => {
         </div> */}
         <div className="m-10 mr-5 p-7 py-10 bg-white rounded-lg mb-4">
           <div className="w-full mb-6 flex justify-between items-center">
-            <h1 className="text-3xl font-semibold">Details</h1>
-            <div>
+            <h1 className="text-3xl font-semibold">
+              <span>
+                <ContactPageIcon fontSize="large" />
+              </span>{' '}
+              Details
+            </h1>
+            <div className="transform scale-110">
               <IconButton
                 onClick={() => {
                   dispatch(setupdatecontact(data));

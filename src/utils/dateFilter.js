@@ -26,7 +26,12 @@ function DateRangeColumnFilter({
       <p className="mr-4 ">Filter by date: </p>
       <div>
         <input
-          min={min.toISOString().slice(0, 10)}
+          min={new Date(new Date(min).setDate(min.getDate() + 1))
+            .toISOString()
+            .slice(0, 10)}
+          max={new Date(new Date(max).setDate(max.getDate() + 1))
+            .toISOString()
+            .slice(0, 10)}
           onChange={(e) => {
             const val = e.target.value;
             setFilter((old = []) => [val ? val : undefined, old[1]]);
@@ -36,8 +41,14 @@ function DateRangeColumnFilter({
           className="border border-gray-300 p-1 rounded-lg"
         />
         {' to '}
+
         <input
-          max={max.toISOString().slice(0, 10)}
+          min={new Date(new Date(min).setDate(min.getDate() + 1))
+            .toISOString()
+            .slice(0, 10)}
+          max={new Date(new Date(max).setDate(max.getDate() + 1))
+            .toISOString()
+            .slice(0, 10)}
           onChange={(e) => {
             const val = e.target.value;
             setFilter((old = []) => [

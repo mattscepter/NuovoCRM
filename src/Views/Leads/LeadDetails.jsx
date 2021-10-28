@@ -598,7 +598,7 @@ const LeadDetails = ({ setShow, show, data }) => {
                           <th>Unit Price</th>
                           <th>Amount</th>
                         </tr>
-                        {lead.items.map((item, index) => {
+                        {lead?.items?.map((item, index) => {
                           let inven = inventory.filter(
                             (f) => f._id === item?.item?._id,
                           )[0];
@@ -677,10 +677,10 @@ const LeadDetails = ({ setShow, show, data }) => {
                   <div className="w-full justify-center flex">
                     <Button
                       onClick={() => {
-                        if (lead.stage === 'Dispatched') {
+                        if (lead?.stage === 'Dispatched') {
                           axiosInstance
                             .patch(
-                              `/update-stage/${lead._id}/${user._id}`,
+                              `/update-stage/${lead?._id}/${user._id}`,
                               { stage: 'Invoice' },
                               {
                                 headers: {
@@ -781,7 +781,7 @@ const LeadDetails = ({ setShow, show, data }) => {
                   </div>
                 ) : (
                   <div>
-                    <ReactToPrint
+                    {/* <ReactToPrint
                       pageStyle={pageStyle}
                       trigger={() => (
                         <Button
@@ -796,7 +796,7 @@ const LeadDetails = ({ setShow, show, data }) => {
                         </Button>
                       )}
                       content={() => invoiceRef.current}
-                    />
+                    /> */}
 
                     <Invoice componentRef={invoiceRef} lead={lead} />
                     <div>
