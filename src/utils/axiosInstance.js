@@ -1,7 +1,7 @@
 const { default: axios } = require('axios');
 
 const axiosInstance = axios.create({
-  baseURL: 'https://furniture-crm-backend.herokuapp.com/api',
+  baseURL: 'http://localhost:600/api',
 });
 
 export default axiosInstance;
