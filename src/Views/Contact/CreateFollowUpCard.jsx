@@ -17,7 +17,6 @@ const CreateFollowUpCard = ({ phone, show, fromContact }) => {
   const contact = useSelector((state) => state.contact.contact);
   const data = useSelector((state) => state.contact.update);
   const dispatch = useDispatch();
-
   const token = Cookies.get('JWT');
   const user = JSON.parse(localStorage.getItem('user'));
 
