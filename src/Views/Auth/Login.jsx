@@ -54,10 +54,10 @@ const Login = () => {
   });
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div className="h-screen w-full flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white mx-4 w-full sm:w-1/2 lg:w-1/4 p-6 flex flex-col justify-center items-center "
+        className="bg-white mx-4 w-full sm:w-1/2 lg:w-1/4 p-6 flex flex-col justify-center items-center rounded-xl shadow-lg"
       >
         <h2 className="text-4xl pb-4">Login</h2>
         <div className="px-2 flex flex-col w-full">
@@ -91,7 +91,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="bg-green-600 mt-3 hover:bg-green-700 px-5 py-2 text-lg rounded-md my-2 mr-4 text-white"
+          className="bg-green-600 mt-6 hover:bg-green-700 px-5 py-2 text-lg rounded-md my-2 mr-4 text-white"
         >
           Login
         </button>
