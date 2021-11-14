@@ -208,7 +208,31 @@ export default function MiniDrawer({ Component, props }) {
             </div>
             <div className="flex items-center justify-center sm:mr-4">
               <Button
-                onClick={() => dispatch(createorgCard({ show: true }))}
+                onClick={() => {
+                  dispatch(
+                    createcontactCard({
+                      show: false,
+                      phone: null,
+                      fromLead: false,
+                    }),
+                  );
+                  dispatch(
+                    createFollowUp({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+                  dispatch(
+                    createleadCard({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+
+                  dispatch(createorgCard({ show: true }));
+                }}
                 style={{
                   textTransform: 'capitalize',
                   backgroundColor: 'white ',
@@ -220,15 +244,31 @@ export default function MiniDrawer({ Component, props }) {
               </Button>
 
               <Button
-                onClick={() =>
+                onClick={() => {
+                  dispatch(createorgCard({ show: false }));
+                  dispatch(
+                    createFollowUp({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+                  dispatch(
+                    createleadCard({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+
                   dispatch(
                     createcontactCard({
                       show: true,
                       phone: null,
                       fromLead: false,
                     }),
-                  )
-                }
+                  );
+                }}
                 style={{
                   textTransform: 'capitalize',
                   backgroundColor: 'white ',
@@ -240,15 +280,31 @@ export default function MiniDrawer({ Component, props }) {
               </Button>
 
               <Button
-                onClick={() =>
+                onClick={() => {
+                  dispatch(createorgCard({ show: false }));
+                  dispatch(
+                    createcontactCard({
+                      show: false,
+                      phone: null,
+                      fromLead: false,
+                    }),
+                  );
+                  dispatch(
+                    createleadCard({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+
                   dispatch(
                     createFollowUp({
                       show: true,
                       phone: null,
                       fromContact: false,
                     }),
-                  )
-                }
+                  );
+                }}
                 style={{
                   textTransform: 'capitalize',
                   backgroundColor: 'white ',
@@ -260,15 +316,31 @@ export default function MiniDrawer({ Component, props }) {
               </Button>
 
               <Button
-                onClick={() =>
+                onClick={() => {
+                  dispatch(createorgCard({ show: false }));
+                  dispatch(
+                    createcontactCard({
+                      show: false,
+                      phone: null,
+                      fromLead: false,
+                    }),
+                  );
+                  dispatch(
+                    createFollowUp({
+                      show: false,
+                      phone: null,
+                      fromContact: false,
+                    }),
+                  );
+
                   dispatch(
                     createleadCard({
                       show: true,
                       phone: null,
                       fromContact: false,
                     }),
-                  )
-                }
+                  );
+                }}
                 style={{
                   textTransform: 'capitalize',
                   backgroundColor: 'white ',
