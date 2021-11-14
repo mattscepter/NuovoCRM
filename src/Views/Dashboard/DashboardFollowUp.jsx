@@ -36,6 +36,7 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
         },
       )
       .then((res) => {
+        dispatch(refreshContact(data._id));
         dispatch(
           createFollowUp({ show: false, phone: null, fromContact: false }),
         );
@@ -111,6 +112,13 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                       })
                       .then((res) => {
                         dispatch(refreshContact(data._id));
+                        dispatch(
+                          createFollowUp({
+                            show: false,
+                            phone: null,
+                            fromContact: false,
+                          }),
+                        );
                         dispatch(
                           setAlert({
                             message: 'FollowUp deleted',
@@ -198,6 +206,14 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                       .then((res) => {
                         dispatch(refreshContact(data._id));
                         dispatch(
+                          createFollowUp({
+                            show: false,
+                            phone: null,
+                            fromContact: false,
+                          }),
+                        );
+
+                        dispatch(
                           setAlert({
                             message: 'FollowUp deleted',
                             error: false,
@@ -272,6 +288,14 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                       })
                       .then((res) => {
                         dispatch(refreshContact(data._id));
+                        dispatch(
+                          createFollowUp({
+                            show: false,
+                            phone: null,
+                            fromContact: false,
+                          }),
+                        );
+
                         dispatch(
                           setAlert({
                             message: 'FollowUp deleted',
@@ -349,6 +373,13 @@ const DashboardFollowUp = ({ name, fupFilter, fup }) => {
                       })
                       .then((res) => {
                         dispatch(refreshContact(data._id));
+                        dispatch(
+                          createFollowUp({
+                            show: false,
+                            phone: null,
+                            fromContact: false,
+                          }),
+                        );
                         dispatch(
                           setAlert({
                             message: 'FollowUp deleted',

@@ -297,8 +297,7 @@ const CreateContactDetails = ({ type, setType }) => {
             />
           </div>
         </div>
-        <div className="bg-white px-4 pb-2 w-full flex flex-col mt-2">
-          <h3 className="text-lg font-semibold pl-2">Address</h3>
+        <div className="bg-white px-4 pb-1 w-full flex flex-col ">
           <div className="flex flex-wrap w-full">
             <div className="flex-col mt-3 flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -383,7 +382,7 @@ const CreateContactDetails = ({ type, setType }) => {
       </div>
       <button
         onClick={(e) => handleSubmit(e)}
-        className="bg-green-600 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-4 mb-0 text-white"
+        className="bg-green-600 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-1 mb-0 text-white"
       >
         Save Contact
       </button>

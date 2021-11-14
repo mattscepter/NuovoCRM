@@ -25,6 +25,9 @@ module.exports = {
       maxHeight: {
         lead: '76vh',
       },
+      scale: {
+        85: 0.85,
+      },
     },
   },
   variants: {

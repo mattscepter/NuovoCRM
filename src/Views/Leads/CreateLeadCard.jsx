@@ -133,7 +133,7 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
         show ? 'block' : 'hidden'
       } fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-full h-full bg-black bg-opacity-20  z-50 shadow-2xl`}
     >
-      <div className="bg-white w-1/3 pb-2 rounded-t-lg flex flex-col items-center">
+      <div className="bg-white mt-14 w-1/3 pb-1 transform scale-85 rounded-lg flex flex-col items-center">
         <div className="w-full flex justify-end">
           <IconButton
             onClick={() => {
@@ -154,9 +154,9 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
           <h2 className="text-center text-2xl font-semibold">Create Lead</h2>
         </div>
         <div className="flex flex-wrap w-full">
-          <div className="bg-white px-4 pb-2 flex-1 flex flex-col mr-1">
+          <div className="bg-white px-4 pb-1 flex-1 flex flex-col mr-1">
             {!fromContact ? (
-              <div className="px-2 mt-3 flex flex-col w-full">
+              <div className="px-2 mt-1 flex flex-col w-full">
                 <lable className="text-gray-2 text-md font-semibold ">
                   Phone number
                 </lable>
@@ -189,7 +189,7 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
                 ) : null}
               </div>
             ) : null}
-            <div className="px-2 mt-3 mb-3 flex flex-col w-full">
+            <div className="px-2 mt-2 mb-2 flex flex-col w-full">
               <lable className="text-gray-2 text-md font-semibold ">
                 Title
               </lable>
@@ -205,7 +205,7 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 w-full flex flex-col">
+            <div className="p-2 pb-0 pt-1 w-full flex flex-col">
               <lable className="text-gray-2 text-md font-semibold ">
                 Description
               </lable>
@@ -219,7 +219,7 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
           </div>
         </div>
 
-        <div className="bg-white px-4 pb-2 w-full flex flex-col mt-4">
+        <div className="bg-white px-4 pb-2 w-full flex flex-col ">
           <div className="flex items-center">
             <p className="text-lg font-semibold ml-3">Add Items:</p>
             <IconButton
@@ -304,7 +304,7 @@ const CreateLeadCard = ({ phone, show, fromContact }) => {
         </div>
         <button
           onClick={(e) => handleSubmit(e)}
-          className="bg-green-600 mt-3 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-4 text-white"
+          className="bg-green-600 mt-1 hover:bg-green-700 px-5 py-2 text-lg rounded-md m-4 text-white"
         >
           Save Lead
         </button>

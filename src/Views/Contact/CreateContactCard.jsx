@@ -30,7 +30,7 @@ const CreateContactCard = ({ phone, show, fromLead }) => {
         show ? 'block' : 'hidden'
       } fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-full h-full bg-black bg-opacity-20 mt-10 mx-4  z-50 shadow-2xl`}
     >
-      <div className="w-1/2 bg-white flex flex-col pb-4 items-center rounded-lg">
+      <div className="w-1/2 bg-white flex flex-col pb-1 items-center rounded-lg transform scale-85">
         {' '}
         <div className="w-full flex justify-end">
           <IconButton
@@ -48,7 +48,7 @@ const CreateContactCard = ({ phone, show, fromLead }) => {
             <CloseIcon />
           </IconButton>
         </div>
-        <div className="p-4 w-full flex justify-center flex-col items-center">
+        <div className="p-4 pt-0 w-full flex justify-center flex-col items-center">
           <h2 className="text-2xl font-semibold m-0">Create Contact</h2>
           <div className="px-6 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Type</lable>

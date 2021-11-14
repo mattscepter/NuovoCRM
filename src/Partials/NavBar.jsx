@@ -45,7 +45,7 @@ import {
 import axiosInstance from '../utils/axiosInstance';
 import CheckIcon from '@mui/icons-material/Check';
 
-const drawerWidth = 230;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
+      width: theme.spacing(8) + 1,
     },
     backgroundColor: 'rgb(73, 71, 129)',
     height: '100%',
@@ -207,96 +207,6 @@ export default function MiniDrawer({ Component, props }) {
               <img src={logo} alt="" style={{ height: '45px' }} />
             </div>
             <div className="flex items-center justify-center sm:mr-4">
-              {/* <IconButton
-                id="basic-button"
-                aria-controls="basic-menu"
-                aria-haspopup="true"
-                aria-expanded={followUpOpen ? 'true' : undefined}
-                onClick={handleClick}
-              >
-                <CircleNotificationsIcon
-                  fontSize="large"
-                  style={{ color: 'white' }}
-                />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={followUpOpen}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-                className="mt-10 ml-2"
-              >
-                {followUp?.map((fup) => {
-                  const name = contact?.filter(
-                    (f) => f._id === fup?.contactId,
-                  )[0];
-                  return (
-                    <>
-                      {new Date(fup?.date).toLocaleString('en-US', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                      }) ===
-                      new Date().toLocaleString('en-US', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                      }) ? (
-                        <MenuItem
-                          style={{ width: '20vw' }}
-                          onClick={handleClose}
-                        >
-                          <div className="w-full flex justify-between">
-                            <div
-                              onClick={() => {
-                                history.push(`/contactdetail/${name?._id}`);
-                              }}
-                            >
-                              <p>{fup?.text}</p>
-                              <p className="text-sm">
-                                {name?.name + '(' + name?.phone + ')'}
-                              </p>
-                            </div>
-                            <IconButton
-                              onClick={() => {
-                                const token = Cookies.get('JWT');
-                                const User = JSON.parse(
-                                  localStorage.getItem('user'),
-                                );
-                                axiosInstance
-                                  .delete(
-                                    `/delete-followup/${fup?._id}/${User._id}`,
-                                    {
-                                      headers: {
-                                        Authorization: `Bearer ${token}`,
-                                      },
-                                    },
-                                  )
-                                  .then((res) => {
-                                    console.log(res);
-                                    dispatch(
-                                      createFollowUp({
-                                        show: false,
-                                        phone: '',
-                                        fromContact: false,
-                                      }),
-                                    );
-                                  });
-                              }}
-                            >
-                              <CheckIcon />
-                            </IconButton>
-                          </div>
-                        </MenuItem>
-                      ) : null}
-                    </>
-                  );
-                })}
-              </Menu> */}
-
               <Button
                 onClick={() => dispatch(createorgCard({ show: true }))}
                 style={{
@@ -422,6 +332,29 @@ export default function MiniDrawer({ Component, props }) {
           <ListItem
             button
             onClick={() => {
+              dispatch(createorgCard({ show: false }));
+              dispatch(
+                createcontactCard({
+                  show: false,
+                  phone: null,
+                  fromLead: false,
+                }),
+              );
+              dispatch(
+                createFollowUp({
+                  show: false,
+                  phone: null,
+                  fromContact: false,
+                }),
+              );
+              dispatch(
+                createleadCard({
+                  show: false,
+                  phone: null,
+                  fromContact: false,
+                }),
+              );
+
               Cookies.remove('JWT');
               localStorage.clear();
               history.push('/login');
