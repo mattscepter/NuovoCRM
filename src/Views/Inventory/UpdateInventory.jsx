@@ -25,31 +25,11 @@ const CreateInventory = () => {
     if (!values.sku) {
       errors.sku = '*Required';
     }
-
     if (!values.article) {
       errors.article = '*Required';
     }
-    if (!values.item) {
-      errors.item = '*Required';
-    }
-    if (!values.length) {
-      errors.length = '*Required';
-    }
-    if (!values.width) {
-      errors.width = '*Required';
-    }
-    if (!values.height) {
-      errors.height = '*Required';
-    }
-
     if (!values.brand) {
       errors.brand = '*Required';
-    }
-    if (!values.manufacturer) {
-      errors.manufacturer = '*Required';
-    }
-    if (!values.hsn_code) {
-      errors.hsn_code = '*Required';
     }
     if (!values.sale_price) {
       errors.sale_price = '*Required';
@@ -57,17 +37,8 @@ const CreateInventory = () => {
     if (!values.purchase_price) {
       errors.purchase_price = '*Required';
     }
-    if (!values.mpn_code) {
-      errors.mpn_code = '*Required';
-    }
-    if (!values.isbn_code) {
-      errors.isbn_code = '*Required';
-    }
     if (!values.gst) {
       errors.gst = '*Required';
-    }
-    if (!values.description) {
-      errors.description = '*Required';
     }
     if (!values.colour) {
       errors.colour = '*Required';
@@ -90,7 +61,7 @@ const CreateInventory = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && values.item_name !== '') {
       var todayDate = new Date().toISOString().slice(0, 10);
       var newdata = {
         type: values.type,
@@ -118,12 +89,12 @@ const CreateInventory = () => {
   };
 
   return (
-    <form className="mt-10 mx-4 flex flex-col items-center">
+    <form className="mt-8 mx-4 flex flex-col items-center">
       <div className="bg-white flex justify-between items-center p-4 mb-4 w-full rounded-lg">
         <h2 className="text-xl font-bold m-0">Update Inventory</h2>
       </div>
       <div className="flex flex-wrap w-full">
-        <div className="bg-white px-4 pt-4  pb-2 flex-1 flex flex-col rounded-l-lg">
+        <div className="bg-white p-4  pb-0 flex-1 flex flex-col rounded-tl-lg">
           <lable className=" px-2 text-gray-2 mt-4 text-md font-semibold ">
             Type:
           </lable>
@@ -212,11 +183,6 @@ const CreateInventory = () => {
                 placeholder="Enter length"
                 {...getFieldProps('length')}
               />
-              {errors.length ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.length}
-                </div>
-              ) : null}
             </div>
             <div className="flex-col flex flex-1 px-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -228,11 +194,6 @@ const CreateInventory = () => {
                 placeholder="Enter width"
                 {...getFieldProps('width')}
               />
-              {errors.width ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.width}
-                </div>
-              ) : null}
             </div>
             <div className="flex-col flex flex-1 px-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -244,11 +205,6 @@ const CreateInventory = () => {
                 placeholder="Enter height"
                 {...getFieldProps('height')}
               />
-              {errors.height ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.height}
-                </div>
-              ) : null}
             </div>
           </div>
           <div className="px-2 mt-3 flex flex-col w-full">
@@ -264,7 +220,9 @@ const CreateInventory = () => {
               <div className="w-full text-sm text-red-400">{errors.image}</div>
             ) : null}
           </div>
-          <div className="px-2 pt-1 flex flex-col w-full">
+        </div>
+        <div className="bg-white p-4 pb-0 flex-1 flex flex-col rounded-tr-lg">
+          <div className="px-2  mt-1 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">GST</lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
@@ -276,7 +234,7 @@ const CreateInventory = () => {
               <div className="w-full text-sm text-red-400">{errors.gst}</div>
             ) : null}
           </div>
-          <div className="px-2 pt-1 mb-3 flex flex-col w-full">
+          <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Colour</lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
@@ -288,9 +246,8 @@ const CreateInventory = () => {
               <div className="w-full text-sm text-red-400">{errors.colour}</div>
             ) : null}
           </div>
-        </div>
-        <div className="bg-white p-4 flex-1 flex flex-col rounded-r-lg">
-          <div className="px-2 flex flex-col w-full">
+
+          <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Brand</lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
@@ -304,22 +261,6 @@ const CreateInventory = () => {
           </div>
           <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">
-              Manufacturer
-            </lable>
-            <input
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="text"
-              placeholder="Enter manufaturer"
-              {...getFieldProps('manufacturer')}
-            />
-            {errors.manufacturer ? (
-              <div className="w-full text-sm text-red-400">
-                {errors.manufacturer}
-              </div>
-            ) : null}
-          </div>
-          <div className="px-2 mt-3 flex flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">
               HSN Code
             </lable>
             <input
@@ -328,11 +269,6 @@ const CreateInventory = () => {
               placeholder="Enter HSN code"
               {...getFieldProps('hsn_code')}
             />
-            {errors.hsn_code ? (
-              <div className="w-full text-sm text-red-400">
-                {errors.hsn_code}
-              </div>
-            ) : null}
           </div>
           <div className="px-2 mt-3 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">
@@ -366,36 +302,8 @@ const CreateInventory = () => {
               </div>
             ) : null}
           </div>
-          <div className="px-2 mt-3 flex flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">MPN</lable>
-            <input
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="number"
-              placeholder="Enter MPN"
-              {...getFieldProps('mpn_code')}
-            />
-            {errors.mpn_code ? (
-              <div className="w-full text-sm text-red-400">
-                {errors.mpn_code}
-              </div>
-            ) : null}
-          </div>
-          <div className="px-2 flex mt-3 flex-col w-full">
-            <lable className="text-gray-2 text-md font-semibold ">ISBN</lable>
-            <input
-              className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="number"
-              placeholder="Enter ISBN"
-              {...getFieldProps('isbn_code')}
-            />
-            {errors.isbn_code ? (
-              <div className="w-full text-sm text-red-400">
-                {errors.isbn_code}
-              </div>
-            ) : null}
-          </div>
         </div>
-        <div className="w-full mt-3 mb-3 flex flex-col bg-white p-4 rounded-lg">
+        <div className="w-full px-6 mb-3 flex flex-col bg-white p-4 rounded-b-lg">
           <lable className="text-gray-2 text-md font-semibold ">
             Description
           </lable>

@@ -58,8 +58,9 @@ const CreateContactDetails = ({ type, setType }) => {
         errors.phone = 'Contact already exists';
       }
     }
-    if (!values.email) {
-      errors.email = '*Required';
+
+    if (values.email.length === 0) {
+      delete errors.email;
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
@@ -70,21 +71,6 @@ const CreateContactDetails = ({ type, setType }) => {
     } else if (values.whatsapp_no.toString().length !== 10) {
       errors.whatsapp_no = 'Length should be 10';
     }
-    if (!values.street) {
-      errors.street = '*Required';
-    }
-    if (!values.country) {
-      errors.country = '*Required';
-    }
-    if (!values.state) {
-      errors.state = '*Required';
-    }
-    if (!values.city) {
-      errors.city = '*Required';
-    }
-    if (!values.zipcode) {
-      errors.zipcode = '*Required';
-    }
     return errors;
   };
 
@@ -92,6 +78,7 @@ const CreateContactDetails = ({ type, setType }) => {
     {
       initialValues: {
         organization: '',
+        salutation: '',
         name: '',
         phone: '',
         email: '',
@@ -117,7 +104,7 @@ const CreateContactDetails = ({ type, setType }) => {
         dispatch(
           createContact(
             {
-              name: values.name,
+              name: values.salutation + ' ' + values.name,
               phone: values.phone,
               email: values.email,
               whatsapp_no: values.whatsapp_no,
@@ -135,7 +122,29 @@ const CreateContactDetails = ({ type, setType }) => {
           ),
         );
       } else {
-        dispatch(createContact(values, resetForm, history, setType));
+        dispatch(
+          createContact(
+            {
+              organization: values.organization,
+              name: values.salutation + ' ' + values.name,
+              phone: values.phone,
+              email: values.email,
+              department: values.department,
+              title: values.title,
+              whatsapp_no: values.whatsapp_no,
+              description: values.description,
+              street: values.street,
+              city: values.city,
+              state: values.state,
+              country: values.country,
+              zipcode: values.zipcode,
+              website: values.website,
+            },
+            resetForm,
+            history,
+            setType,
+          ),
+        );
       }
     } else {
       dispatch(setAlert({ message: 'Fill fields properly', error: true }));
@@ -175,6 +184,35 @@ const CreateContactDetails = ({ type, setType }) => {
               ) : null}
             </div>
           ) : null}
+
+          <div className="px-2 mb-3 flex flex-col w-full">
+            <lable className="text-gray-2 text-md font-semibold ">
+              Salutation
+            </lable>
+            <Select
+              theme={(theme) => ({
+                ...theme,
+                borderRadius: 5,
+                colors: {
+                  ...theme.colors,
+                  primary25: 'lightgray',
+                  primary: 'lightgray',
+                },
+              })}
+              options={[
+                { value: 'Mr.', label: 'Mr.' },
+                { value: 'Ms.', label: 'Ms.' },
+                { value: 'Mrs.', label: 'Mrs.' },
+                { value: 'Dr.', label: 'Dr.' },
+                { value: 'Arch.', label: 'Arch.' },
+                { value: 'Er.', label: 'Er.' },
+                { value: 'CA', label: 'CA' },
+              ]}
+              onChange={(selectedOption) => {
+                setFieldValue('salutation', selectedOption.value);
+              }}
+            />
+          </div>
 
           <div className="px-2 flex flex-col w-full">
             <lable className="text-gray-2 text-md font-semibold ">Name</lable>
@@ -237,9 +275,9 @@ const CreateContactDetails = ({ type, setType }) => {
               placeholder="Enter email"
               {...getFieldProps('email')}
             />
-            {errors.email ? (
+            {/* {errors.email ? (
               <div className="w-full text-sm text-red-400">{errors.email}</div>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
         <div className="bg-white p-4 flex-1 flex flex-col">
@@ -309,11 +347,11 @@ const CreateContactDetails = ({ type, setType }) => {
                 placeholder="Enter street"
                 {...getFieldProps('street')}
               />
-              {errors.street ? (
+              {/* {errors.street ? (
                 <div className="w-full text-sm text-red-400">
                   {errors.street}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <div className="flex-col mt-3 flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -325,11 +363,11 @@ const CreateContactDetails = ({ type, setType }) => {
                 placeholder="Enter country"
                 {...getFieldProps('country')}
               />
-              {errors.country ? (
+              {/* {errors.country ? (
                 <div className="w-full text-sm text-red-400">
                   {errors.country}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <div className="flex-col mt-3 flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -341,11 +379,11 @@ const CreateContactDetails = ({ type, setType }) => {
                 placeholder="Enter state"
                 {...getFieldProps('state')}
               />
-              {errors.state ? (
+              {/* {errors.state ? (
                 <div className="w-full text-sm text-red-400">
                   {errors.state}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
           <div className="flex flex-wrap w-full">
@@ -357,9 +395,9 @@ const CreateContactDetails = ({ type, setType }) => {
                 placeholder="Enter city"
                 {...getFieldProps('city')}
               />
-              {errors.city ? (
+              {/* {errors.city ? (
                 <div className="w-full text-sm text-red-400">{errors.city}</div>
-              ) : null}
+              ) : null} */}
             </div>
             <div className="flex-col flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -371,11 +409,11 @@ const CreateContactDetails = ({ type, setType }) => {
                 placeholder="Enter zip code"
                 {...getFieldProps('zipcode')}
               />
-              {errors.zipcode ? (
+              {/* {errors.zipcode ? (
                 <div className="w-full text-sm text-red-400">
                   {errors.zipcode}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>

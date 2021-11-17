@@ -37,9 +37,14 @@ const IndeterminateCheckbox = React.forwardRef(
     }, [resolvedRef, indeterminate]);
 
     return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
+      <div className="w-full flex justify-center items-center">
+        <input
+          className="transform scale-150"
+          type="checkbox"
+          ref={resolvedRef}
+          {...rest}
+        />
+      </div>
     );
   },
 );

@@ -51,11 +51,15 @@ const CreateContact = () => {
         errors.phone = 'Contact already exists';
       }
     }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    if (values.email.length === 0) {
+      delete errors.email;
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
       errors.email = 'Invalid email address';
     }
     if (!values?.whatsapp_no) {
-      errors.whatsapp_no = '';
+      delete errors.whatsapp_no;
     } else if (values?.whatsapp_no?.toString().length !== 10) {
       errors.whatsapp_no = 'Length should be 10';
     }
@@ -76,6 +80,8 @@ const CreateContact = () => {
       dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
   };
+
+  console.log(errors);
 
   useEffect(() => {
     if (data.organization) {
@@ -269,11 +275,6 @@ const CreateContact = () => {
                 placeholder="Enter street"
                 {...getFieldProps('street')}
               />
-              {errors.street ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.street}
-                </div>
-              ) : null}
             </div>
             <div className="flex-col mt-3 flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -285,11 +286,6 @@ const CreateContact = () => {
                 placeholder="Enter country"
                 {...getFieldProps('country')}
               />
-              {errors.country ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.country}
-                </div>
-              ) : null}
             </div>
             <div className="flex-col mt-3 flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -301,11 +297,6 @@ const CreateContact = () => {
                 placeholder="Enter state"
                 {...getFieldProps('state')}
               />
-              {errors.state ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.state}
-                </div>
-              ) : null}
             </div>
           </div>
           <div className="flex flex-wrap w-full">
@@ -317,9 +308,6 @@ const CreateContact = () => {
                 placeholder="Enter city"
                 {...getFieldProps('city')}
               />
-              {errors.city ? (
-                <div className="w-full text-sm text-red-400">{errors.city}</div>
-              ) : null}
             </div>
             <div className="flex-col flex flex-1 p-2">
               <lable className="text-gray-2 text-md font-semibold ">
@@ -331,11 +319,6 @@ const CreateContact = () => {
                 placeholder="Enter zip code"
                 {...getFieldProps('zipcode')}
               />
-              {errors.zipcode ? (
-                <div className="w-full text-sm text-red-400">
-                  {errors.zipcode}
-                </div>
-              ) : null}
             </div>
           </div>
         </div>
