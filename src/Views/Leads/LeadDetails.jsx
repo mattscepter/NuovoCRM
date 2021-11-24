@@ -261,7 +261,7 @@ const LeadDetails = ({ setShow, show, data }) => {
                     title="No. of items"
                     detail={lead?.items?.length}
                   />
-                  <DetailCard title="Description" detail={data?.description} />
+                  <DetailCard title="Description" detail={lead?.description} />
                   <DetailCard
                     title="Created At"
                     detail={new Date(lead?.createdAt).toLocaleString('en-US', {

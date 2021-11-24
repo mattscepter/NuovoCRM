@@ -20,6 +20,8 @@ const CreateInventory = () => {
     }
     if (!values.sku) {
       errors.sku = '*Required';
+    } else if (values.sku < 0) {
+      errors.sku = 'Value cannot be negative';
     }
 
     if (!values.article) {
@@ -30,12 +32,18 @@ const CreateInventory = () => {
     }
     if (!values.sale_price) {
       errors.sale_price = '*Required';
+    } else if (values.sale_price < 0) {
+      errors.sale_price = 'Value cannot be negative';
     }
     if (!values.purchase_price) {
       errors.purchase_price = '*Required';
+    } else if (values.purchase_price < 0) {
+      errors.purchase_price = 'Value cannot be negative';
     }
     if (!values.gst) {
       errors.gst = '*Required';
+    } else if (values.gst < 0) {
+      errors.gst = 'Value cannot be negative';
     }
     if (!values.colour) {
       errors.colour = '*Required';
@@ -85,6 +93,7 @@ const CreateInventory = () => {
       formdata.append('image', values.image);
       formdata.append('gst', values.gst);
       formdata.append('colour', values.colour);
+      formdata.append('description', values.description);
       formdata.append('date', todayDate);
       dispatch(createInventory(formdata, resetForm, history));
       imgRef.current.value = '';
@@ -92,8 +101,6 @@ const CreateInventory = () => {
       dispatch(setAlert({ message: 'Fill fields properly', error: true }));
     }
   };
-
-  console.log(errors);
 
   return (
     <form className="mt-10 mx-4 flex flex-col items-center">
@@ -274,7 +281,7 @@ const CreateInventory = () => {
             </lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
-              type="number"
+              type="text"
               placeholder="Enter HSN code"
               {...getFieldProps('hsn_code')}
             />
@@ -306,6 +313,7 @@ const CreateInventory = () => {
             </lable>
             <input
               className={`p-2 border border-gray-400 focus:outline-none rounded-md focus:ring-1 ring-red-1`}
+              min="0"
               type="number"
               placeholder="Enter purchase price"
               {...getFieldProps('purchase_price')}

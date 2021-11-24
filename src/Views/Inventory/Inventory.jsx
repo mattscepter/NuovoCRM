@@ -48,11 +48,7 @@ const Inventory = () => {
 
     {
       accessor: 'brand',
-      Header: 'Brand',
-    },
-    {
-      accessor: 'manufacturer',
-      Header: 'Manufacturer',
+      Header: 'Brand/Manufacturer',
     },
     {
       accessor: 'sale_price',
@@ -61,10 +57,6 @@ const Inventory = () => {
     {
       accessor: 'purchase_price',
       Header: 'Purchase price',
-    },
-    {
-      accessor: 'isbn_code',
-      Header: 'ISBN Code',
     },
     {
       accessor: 'createdAt',

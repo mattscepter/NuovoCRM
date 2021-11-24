@@ -23,10 +23,14 @@ import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 const DetailCard = ({ title, detail }) => {
   return (
-    <div className="flex w-full">
-      <p className="flex text-lg font-semibold mr-2">{title}:</p>
-      <p className="text-lg">{detail}</p>
-    </div>
+    <>
+      {detail ? (
+        <div className="flex w-full">
+          <p className="flex text-lg font-semibold mr-2">{title}:</p>
+          <p className="text-lg">{detail}</p>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -257,15 +261,11 @@ const ContactDetails = () => {
             <DetailCard
               title="Address"
               detail={
-                data?.street +
-                ', ' +
-                data?.city +
-                ', ' +
-                data?.state +
-                ', ' +
-                data?.country +
-                ', ' +
-                data?.zipcode
+                (data?.street ? data?.street + ', ' : null) +
+                (data?.city ? data?.city + ', ' : null) +
+                (data?.state ? data?.state + ', ' : null) +
+                (data?.country ? data?.country + ', ' : null) +
+                (data?.zipcode ? data?.zipcode : null)
               }
             />
             <DetailCard title="Department" detail={data?.department} />
