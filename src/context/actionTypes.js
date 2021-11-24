@@ -1,4 +1,5 @@
 export const SET_USER = 'SET_USER';
+export const AUTH_STATE = 'AUTH_STATE';
 
 export const SET_LEADS = 'SET_LEADS';
 export const SET_LEADSLOADING = 'SET_LEADSLOADING';

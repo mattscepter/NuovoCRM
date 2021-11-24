@@ -15,7 +15,6 @@ import CreateInventory from './Views/Inventory/CreateInventory';
 import UpdateInventory from './Views/Inventory/UpdateInventory';
 import InventoryDetails from './Views/Inventory/InventoryDetails';
 import Login from './Views/Auth/Login';
-import Signup from './Views/Auth/Signup';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromStorage } from './context/actions/authActions/authActions';
@@ -35,14 +34,14 @@ import CreateOrgCard from './Views/Organization/CreateOrgCard';
 
 function App() {
   const dispatch = useDispatch();
+  const alert = useSelector((state) => state.alert.alert);
+
   useEffect(() => {
     dispatch(getFromStorage());
     dispatch(getOrganization());
     dispatch(getInventory());
     dispatch(getContact());
   }, [dispatch]);
-
-  const alert = useSelector((state) => state.alert.alert);
 
   useEffect(() => {
     if (alert.error === false) {

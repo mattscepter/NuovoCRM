@@ -2,7 +2,10 @@ import { useFormik } from 'formik';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { setUser } from '../../context/actions/authActions/authActions';
+import {
+  setAuth,
+  setUser,
+} from '../../context/actions/authActions/authActions';
 import axiosInstance from '../../utils/axiosInstance';
 import Cookies from 'js-cookie';
 import { setAlert } from '../../context/actions/errorActions';
@@ -40,6 +43,7 @@ const Login = () => {
           dispatch(setUser(res.data.admin));
           Cookies.set('JWT', res.data.token);
           localStorage.setItem('user', JSON.stringify(res.data.admin));
+          dispatch(setAuth(true));
           history.push('/');
           resetForm();
           dispatch(
@@ -49,6 +53,7 @@ const Login = () => {
         .catch((err) => {
           resetForm();
           dispatch(setAlert({ message: 'Error logging in', error: true }));
+          dispatch(setAuth(false));
         });
     },
   });

@@ -1,16 +1,18 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import MiniDrawer from '../Partials/NavBar';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 function HomeRoute({ component: Component, ...rest }) {
+  const auth = useSelector((state) => state.user.auth);
+
   return (
     <>
       <Route
         {...rest}
         render={(props) => (
           <>
-            {Cookies.get('JWT') ? (
+            {auth ? (
               <MiniDrawer Component={Component} props={props} />
             ) : (
               <Redirect
