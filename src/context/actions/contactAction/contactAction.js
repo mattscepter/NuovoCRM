@@ -13,63 +13,63 @@ import {
   SHOW_CONTACTCREATE,
   SHOW_FOLLOWUP,
   SHOW_LEADCREATE,
-  SHOW_ORGCREATE,
+  SHOW_ORGCREATE
 } from '../../actionTypes';
 import { setAlert } from '../errorActions';
 
 const setContact = (data) => ({
   type: SET_CONTACT,
-  payload: data,
+  payload: data
 });
 
 const deletecontact = (data) => ({
   type: DELETE_CONTACT,
-  payload: data,
+  payload: data
 });
 
 const setupdatecontact = (data) => ({
   type: SET_UPDATECONTACT,
-  payload: data,
+  payload: data
 });
 
 const setOrganization = (data) => ({
   type: SET_ORGANIZATION,
-  payload: data,
+  payload: data
 });
 
 const addContact = (data) => ({
   type: ADD_CONTACT,
-  payload: data,
+  payload: data
 });
 
 const deleteOrganization = (data) => ({
   type: DELETE_ORGANIZATION,
-  payload: data,
+  payload: data
 });
 
 const createFollowUp = (data) => ({
   type: SHOW_FOLLOWUP,
-  payload: data,
+  payload: data
 });
 
 const createleadCard = (data) => ({
   type: SHOW_LEADCREATE,
-  payload: data,
+  payload: data
 });
 
 const createcontactCard = (data) => ({
   type: SHOW_CONTACTCREATE,
-  payload: data,
+  payload: data
 });
 
 const createorgCard = (data) => ({
   type: SHOW_ORGCREATE,
-  payload: data,
+  payload: data
 });
 
 const setUpdateOrg = (data) => ({
   type: SET_UPDATEORG,
-  payload: data,
+  payload: data
 });
 
 const getContact = () => {
@@ -95,28 +95,29 @@ const getOrganization = () => {
 };
 
 const createContact = (values, resetForm, history, setType) => {
+  console.log(values);
   return (dispatch) => {
     const token = Cookies.get('JWT');
     const user = JSON.parse(localStorage.getItem('user'));
     axiosInstance
       .post(`/create-contact/${user._id}`, values, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((res) => {
         console.log(res);
         dispatch(addContact(res.data));
         dispatch(
-          setAlert({ message: 'Contact created successfully', error: false }),
+          setAlert({ message: 'Contact created successfully', error: false })
         );
         resetForm();
         dispatch(
           createcontactCard({
             show: false,
             phone: null,
-            fromLead: false,
-          }),
+            fromLead: false
+          })
         );
         history.push(`/contactdetail/${res.data._id}`);
         setType('');
@@ -140,15 +141,15 @@ const updateContact = (id, data, resetForm, history) => {
     axiosInstance
       .patch(`/update-contact/${id}/${user._id}`, data, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((res) => {
         dispatch(refreshContact(id));
         resetForm();
         history.push(`/contactdetail/${id}`);
         dispatch(
-          setAlert({ message: 'Contact updated successfully', error: false }),
+          setAlert({ message: 'Contact updated successfully', error: false })
         );
       })
       .catch((err) => {
@@ -166,13 +167,13 @@ const deleteContact = (data, id) => {
     axiosInstance
       .delete(`/delete-contact/${data}/${user._id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((res) => {
         dispatch(deletecontact(data));
         dispatch(
-          setAlert({ message: 'Contact deleted successfully', error: false }),
+          setAlert({ message: 'Contact deleted successfully', error: false })
         );
       })
       .catch((err) => {
@@ -217,5 +218,5 @@ export {
   createcontactCard,
   setUpdateOrg,
   refreshOrg,
-  createorgCard,
+  createorgCard
 };
